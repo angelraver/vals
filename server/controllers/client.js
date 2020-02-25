@@ -1,7 +1,7 @@
 var Client = require("../models/client");
 
 exports.getAll = function(req, res) {
-  Client.find({}, 'firstName lastName gender email phone notes', function (error, clients) {
+  Client.find({}, 'firstName lastName gender email phone description', function (error, clients) {
 	  if (error) { console.error(error); }
 	  res.send({
 			clients
@@ -10,34 +10,41 @@ exports.getAll = function(req, res) {
 };
 
 exports.get = function (req, res) {
-	Client.findById(req.params.id, 'firstName lastName gender email phone notes', function (error, client) {
+	Client.findById(req.params.id, 'firstName lastName gender email phone description', function (error, client) {
 	  if (error) { console.error(error); }
 	  res.send(client)
 	})
 }
 
 exports.add = function(req, res) {
+	console.log('- - - - - - - - - - - - - - - - - - - - - - - - ')
+	console.log(req.body)
+	console.log('- - - - - - - - - - - - - - - - - - - - - - - - ')
 	var client = new Client({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phone: req.body.phone,
     gender: req.body.gender,
     email: req.body.email,
-    noters: req.body.notes,
+		description: 'descriptcion',
+		papa: 'papa',
+		zanahoria: 'zanahoria'
 	})
-
+	console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ')
 	client.save(function (error) {
 		if (error) {
 			console.log(error)
 		}
 		res.send({
+			c: client,
+			r: req.body,
 			success: true
 		})
 	})
 }
 
 exports.update = function (req, res) {
-	Client.findById(req.params.id, 'firstName lastName gender email phone notes', function (error, client) {
+	Client.findById(req.params.id, 'firstName lastName gender email phone description', function (error, client) {
 	  if (error) { console.error(error); }
 
 		client.firstName = req.body.firstName
@@ -45,7 +52,7 @@ exports.update = function (req, res) {
 		client.gender = req.body.gender
 		client.email = req.body.email
 		client.phone = req.body.phone
-		client.notes = req.body.notes
+		client.description = req.body.description
 
 	  client.save(function (error) {
 			if (error) {
