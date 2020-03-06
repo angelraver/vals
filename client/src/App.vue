@@ -24,7 +24,7 @@
               <md-icon>calendar_today</md-icon>
               <span class="md-list-item-text">Turnos</span>
             </md-list-item>
-            <router-link v-bind:to="{ name: 'clients' }" class="md-primary">
+            <router-link v-bind:to="{ name: 'Clients' }" class="md-primary">
               <md-list-item>
                 <md-icon>people</md-icon>
                   <span class="md-list-item-text" >Clientes</span>
@@ -59,6 +59,7 @@
 </script>
 
 <style lang="scss" scoped>
+
   .md-app {
     min-height: 350px;
     border: 1px solid rgba(#000, .12);

@@ -1,8 +1,13 @@
 <template>
-  <form novalidate class="md-layout" @submit.prevent="validateUser">
+  <form novalidate class="md-layout" @submit.prevent="validateForm">
+
+    <md-button type="submit" class="md-fab md-primary button-top" :disabled="sending">
+      <md-icon>save</md-icon>
+    </md-button>
+
     <md-card class="md-layout-item md-size-50 md-small-size-100">
       <md-card-header>
-        <div class="md-title">Users</div>
+        <div class="md-title">{{title}}</div>
       </md-card-header>
 
       <md-card-content>
@@ -10,18 +15,25 @@
           <div class="md-layout-item md-small-size-100">
             <md-field :class="getValidationClass('firstName')">
               <label for="first-name">Nombre</label>
-              <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.firstName" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.firstName.required">The first name is required</span>
-              <span class="md-error" v-else-if="!$v.form.firstName.minlength">Invalid first name</span>
+              <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
+              <span class="md-error" v-if="!$v.form.firstName.required">Este campo es obligatorio.</span>
             </md-field>
           </div>
 
           <div class="md-layout-item md-small-size-100">
             <md-field :class="getValidationClass('lastName')">
               <label for="last-name">Apellido</label>
-              <md-input name="last-name" id="last-name" autocomplete="family-name" v-model="form.lastName" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.lastName.required">The last name is required</span>
+              <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
+              <span class="md-error" v-if="!$v.form.lastName.required">Este campo es obligatorio.</span>
               <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid last name</span>
+            </md-field>
+          </div>
+
+          <div class="md-layout-item md-small-size-100">
+            <md-field :class="getValidationClass('phone')">
+              <label for="phone">Celular</label>
+              <md-input name="phone" id="phone" v-model="form.phone" :disabled="sending" />
+              <span class="md-error" v-if="!$v.form.phone.required">Este campo es obligatorio.</span>
             </md-field>
           </div>
 
@@ -33,97 +45,77 @@
                 <md-option value="M">Mujer</md-option>
                 <md-option value="H">Hombre</md-option>
               </md-select>
-              <span class="md-error">The gender is required</span>
+              <span class="md-error">Este campo es obligatorio.</span>
             </md-field>
           </div>
 
-          <md-field :class="getValidationClass('email')">
-            <label for="email">Email</label>
-            <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" :disabled="sending" />
-            <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-            <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
+          <div class="md-layout-item md-small-size-100">
+            <md-field :class="getValidationClass('email')">
+              <label for="first-email">Email</label>
+              <md-input name="email" id="email" v-model="form.email" :disabled="sending" />
+              <span class="md-error">Email mal escrito.</span>
+            </md-field>
+          </div>
+
+          <md-field>
+            <label>Notas</label>
+            <md-textarea name="description" id="description" v-model="form.description"></md-textarea>
           </md-field>
+
         </div>
       </md-card-content>
 
       <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
-      <md-card-actions>
-        <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
-      </md-card-actions>
-
     </md-card>
-
-    <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
 
   </form>
 </template>
 
 <script>
-  import ClientsService from '@/services/ClientsService'
-
+  import ClientService from '@/services/ClientService'
   import { validationMixin } from 'vuelidate'
   import {
     required,
-    email,
-    minLength,
-    maxLength
+    email
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'clientForm',
+    name: 'ClientForm',
     mixins: [validationMixin],
     data: () => ({
-      firstName: '',
-      lastName: '',
+      title: 'Nuevo Cliente',
       form: {
         firstName: null,
         lastName: null,
+        phone: null,
         gender: null,
-        age: null,
-        email: null
+        email: null,
+        description: null
       },
-      userSaved: false,
-      sending: false,
-      lastUser: null
+      sending: false
     }),
-    validations: {
-      form: {
-        firstName: {
-          required,
-          minLength: minLength(3)
-        },
-        lastName: {
-          required,
-          minLength: minLength(3)
-        },
-        age: {
-          required,
-          maxLength: maxLength(3)
-        },
-        gender: {
-          required
-        },
-        email: {
-          required,
-          email
-        }
+    mounted () {
+      this.$emit('on-mounted-events', 'Cliente')
+      if (this.$route.params.id) {
+        this.title = 'Modificar Cliente'
+        this.getClient()
+        .then((client) => {
+          this.form.firstName = client.firstName
+          this.form.lastName = client.lastName
+          this.form.phone = client.phone
+          this.form.gender = client.gender
+          this.form.email = client.email
+          this.form.description = client.description
+          this.form.id = this.$route.params.id
+        })
       }
     },
     methods: {
-      async addClient () {
-        await ClientsService.addClient({
-          firstName: this.firstName,
-          lastName: this.lastName
-        })
-        this.$swal(
-          'Great!',
-          `Your post has been added!`,
-          'success'
-        )
-        this.$router.push({ name: 'Clients' })
+      async getClient () {
+        const response = await ClientService.getClient({ id: this.$route.params.id })
+        return response.data
       },
-
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
 
@@ -133,30 +125,44 @@
           }
         }
       },
-      clearForm () {
-        this.$v.$reset()
-        this.form.firstName = null
-        this.form.lastName = null
-        this.form.age = null
-        this.form.gender = null
-        this.form.email = null
-      },
-      saveUser () {
+      saveForm () {
         this.sending = true
-
-        // Instead of this timeout, here you can call your API
-        window.setTimeout(() => {
-          this.lastUser = `${this.form.firstName} ${this.form.lastName}`
-          this.userSaved = true
-          this.sending = false
-          this.clearForm()
-        }, 1500)
+        if (this.form.id) {
+          ClientService.updateClient(this.form).then(() => {
+            this.sending = false
+            this.$router.push({ name: 'ClientDetails', params: { id: this.form.id, saved: true } })
+          })
+        } else {
+          ClientService.addClient(this.form).then(() => {
+            this.sending = false
+            this.$router.push({ name: 'Clients', params: { saved: true } })
+          })
+        }
       },
-      validateUser () {
+      validateForm () {
         this.$v.$touch()
 
         if (!this.$v.$invalid) {
-          this.saveUser()
+          this.saveForm()
+        }
+      }
+    },
+    validations: {
+      form: {
+        firstName: {
+          required
+        },
+        lastName: {
+          required
+        },
+        phone: {
+          required
+        },
+        gender: {
+          required
+        },
+        email: {
+          email
         }
       }
     }
