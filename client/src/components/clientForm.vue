@@ -5,6 +5,10 @@
       <md-icon>save</md-icon>
     </md-button>
 
+    <md-button class="md-fab md-primary button-top2" v-on:click="goBack()">
+      <md-icon>arrow_back</md-icon>
+    </md-button>
+
     <md-card class="md-layout-item md-size-50 md-small-size-100">
       <md-card-header>
         <div class="md-title">{{title}}</div>
@@ -112,6 +116,9 @@
       }
     },
     methods: {
+      goBack () {
+        this.$router.push({ name: 'Clients', params: {} })
+      },
       async getClient () {
         const response = await ClientService.getClient({ id: this.$route.params.id })
         return response.data

@@ -17,27 +17,20 @@ exports.get = function (req, res) {
 }
 
 exports.add = function(req, res) {
-	console.log('- - - - - - - - - - - - - - - - - - - - - - - - ')
-	console.log(req.body)
-	console.log('- - - - - - - - - - - - - - - - - - - - - - - - ')
 	var client = new Client({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phone: req.body.phone,
     gender: req.body.gender,
     email: req.body.email,
-		description: 'descriptcion',
-		papa: 'papa',
-		zanahoria: 'zanahoria'
+		description: req.body.description
 	})
-	console.log('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ')
+
 	client.save(function (error) {
 		if (error) {
 			console.log(error)
 		}
 		res.send({
-			c: client,
-			r: req.body,
 			success: true
 		})
 	})

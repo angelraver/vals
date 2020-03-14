@@ -7,9 +7,7 @@ var ClientSchema = new Schema({
   phone: String,
   email: String,
   gender: String,
-  description: String,
-  papa: String,
-  zanahoria: String
+  description: String
 });
 
 var Client = mongoose.model("Clients", ClientSchema);

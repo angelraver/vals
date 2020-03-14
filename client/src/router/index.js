@@ -5,6 +5,8 @@ import Clients from '@/components/Clients'
 import ClientDetails from '@/components/ClientDetails'
 import ClientForm from '@/components/ClientForm'
 import TurnoForm from '@/components/TurnoForm'
+import Tratamientos from '@/components/Tratamientos'
+import TratamientoForm from '@/components/TratamientoForm'
 
 Vue.use(Router)
 
@@ -35,6 +37,16 @@ export default new Router({
       path: '/turnofrom/:idclient',
       component: TurnoForm,
       name: 'TurnoForm'
+    },
+    {
+      path: '/tratamientos',
+      component: Tratamientos,
+      name: 'Tratamientos'
+    },
+    {
+      path: '/tratamientoform/:id',
+      component: TratamientoForm,
+      name: 'TratamientoForm'
     }
   ]
 })
