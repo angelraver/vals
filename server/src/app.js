@@ -25,4 +25,4 @@ app.put('/tratamiento/:id', TratamientoController.update);
 app.delete('/tratamiento/:id', TratamientoController.delete);
 app.get('/tratamiento/:id', TratamientoController.get);
 
-app.listen(process.env.PORT || 8081)
+app.listen(process.env.PORT || 8001)

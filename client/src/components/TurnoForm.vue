@@ -39,21 +39,31 @@
       </div>
 
     </md-card>
+
+    <md-dialog :md-active.sync="showDialog">
+      <turno-form-details />
+    </md-dialog>
+
   </div>
 </template>
 
 <script>
   import ClientService from '@/services/ClientService'
+  import TurnoFormDetails from './TurnoFormDetails'
   import format from 'date-fns/format'
 
   export default {
     name: 'TurnoForm',
+    components: {
+      TurnoFormDetails
+    },
     mounted () {
       this.$emit('on-mounted-events', 'Crear turno')
       if (this.$route.params.idclient) this.getClient()
       this.$material.locale.dateFormat = this.dateFormat
     },
     data: () => ({
+      showDialog: false,
       dateFormat: 'dd/MM/yyyy',
       clientName: '',
       selectedDate: null,
@@ -86,6 +96,7 @@
         return this.selectedDate ? format(this.selectedDate, this.dateFormat) : 'NO DATE'
       },
       showTratamiento (hora) {
+        this.showDialog = true
         console.log(hora)
       }
     }
