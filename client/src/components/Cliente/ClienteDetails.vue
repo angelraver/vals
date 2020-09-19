@@ -32,7 +32,7 @@
       content="Estás a punto de eliminar éste cliente. Estás seguro que quieres hacerlo?"
       confirmText="Eliminarlo"
       cancelText="Cancelar"
-      v-bind:onConfirm="deleteClient"
+      v-bind:onConfirm="deleteCliente"
       class="button-bottom"
     >
     </dialog-confirm>
@@ -43,18 +43,16 @@
 </template>
 
 <script>
-  import ClientService from '@/services/ClientService'
-  import DialogConfirm from './DialogConfirm'
+  import ClienteService from '@/services/ClienteService'
+  import DialogConfirm from '@/components/components/DialogConfirm'
 
   export default {
-    name: 'ClientDetails',
-    components: {
-      DialogConfirm
-    },
+    name: 'ClienteDetails',
+    components: { DialogConfirm },
     mounted () {
       this.$emit('on-mounted-events', 'Detalle de cliente')
       if (this.$route.params.id) {
-        this.getClient()
+        this.getCliente()
       }
     },
     data: () => ({
@@ -66,27 +64,27 @@
       description: ''
     }),
     methods: {
-      getClient () {
-        ClientService.getClient({ id: this.$route.params.id })
-        .then((client) => {
-          this.firstName = client.data.firstName
-          this.lastName = client.data.lastName
-          this.phone = client.data.phone
-          this.gender = client.data.gender
-          this.email = client.data.email
-          this.description = client.data.description
+      getCliente () {
+        ClienteService.getCliente({ id: this.$route.params.id })
+        .then((cliente) => {
+          this.firstName = cliente.data.firstName
+          this.lastName = cliente.data.lastName
+          this.phone = cliente.data.phone
+          this.gender = cliente.data.gender
+          this.email = cliente.data.email
+          this.description = cliente.data.description
         })
       },
-      deleteClient () {
-        ClientService.deleteClient(this.$route.params.id).then(() => {
-          this.$router.push({ name: 'Clients', params: { saved: true } })
+      deleteCliente () {
+        ClienteService.deleteCliente(this.$route.params.id).then(() => {
+          this.$router.push({ name: 'Clientes', params: { saved: true } })
         })
       },
       goToEdit () {
-        this.$router.push({ name: 'ClientForm', params: { id: this.$route.params.id } })
+        this.$router.push({ name: 'ClienteForm', params: { id: this.$route.params.id } })
       },
       newTurno () {
-        this.$router.push({ name: 'TurnoForm', params: { idclient: this.$route.params.id } })
+        this.$router.push({ name: 'TurnoForm', params: { idCliente: this.$route.params.id } })
       }
     }
   }

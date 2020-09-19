@@ -77,7 +77,7 @@
 </template>
 
 <script>
-  import ClientService from '@/services/ClientService'
+  import ClienteService from '@/services/ClienteService'
   import { validationMixin } from 'vuelidate'
   import {
     required,
@@ -85,7 +85,7 @@
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'ClientForm',
+    name: 'ClienteForm',
     mixins: [validationMixin],
     data: () => ({
       title: 'Nuevo Cliente',
@@ -103,7 +103,7 @@
       this.$emit('on-mounted-events', 'Cliente')
       if (this.$route.params.id) {
         this.title = 'Modificar Cliente'
-        this.getClient()
+        this.getCliente()
         .then((client) => {
           this.form.firstName = client.firstName
           this.form.lastName = client.lastName
@@ -117,10 +117,10 @@
     },
     methods: {
       goBack () {
-        this.$router.push({ name: 'Clients', params: {} })
+        this.$router.push({ name: 'Clientes', params: {} })
       },
-      async getClient () {
-        const response = await ClientService.getClient({ id: this.$route.params.id })
+      async getCliente () {
+        const response = await ClienteService.getCliente({ id: this.$route.params.id })
         return response.data
       },
       getValidationClass (fieldName) {
@@ -135,14 +135,14 @@
       saveForm () {
         this.sending = true
         if (this.form.id) {
-          ClientService.updateClient(this.form).then(() => {
+          ClienteService.updateCliente(this.form).then(() => {
             this.sending = false
-            this.$router.push({ name: 'ClientDetails', params: { id: this.form.id, saved: true } })
+            this.$router.push({ name: 'ClienteDetails', params: { id: this.form.id, saved: true } })
           })
         } else {
-          ClientService.addClient(this.form).then(() => {
+          ClienteService.addCliente(this.form).then(() => {
             this.sending = false
-            this.$router.push({ name: 'Clients', params: { saved: true } })
+            this.$router.push({ name: 'Clientes', params: { saved: true } })
           })
         }
       },

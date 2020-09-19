@@ -24,7 +24,7 @@
             <md-icon>calendar_today</md-icon>
             <span class="md-list-item-text">Turnos</span>
           </md-list-item>
-          <router-link v-bind:to="{ name: 'Clients' }" class="md-primary">
+          <router-link v-bind:to="{ name: 'Clientes' }" class="md-primary">
             <md-list-item>
               <md-icon>people</md-icon>
               <span class="md-list-item-text" >Clientes</span>
@@ -49,33 +49,32 @@
 </template>
 
 <script>
-  export default {
-    name: 'PersistentMini',
-    data: () => ({
-      menuVisible: false,
-      title: ''
-    }),
-    methods: {
-      toggleMenu () {
-        this.menuVisible = !this.menuVisible
-      },
-      moutedEvents: function (value) {
-        this.title = value
-      }
+export default {
+  name: 'PersistentMini',
+  data: () => ({
+    menuVisible: false,
+    title: ''
+  }),
+  methods: {
+    toggleMenu () {
+      this.menuVisible = !this.menuVisible
+    },
+    moutedEvents: function (value) {
+      this.title = value
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
+.md-app {
+  min-height: 350px;
+  border: 1px solid rgba(#000, .12);
+}
 
-  .md-app {
-    min-height: 350px;
-    border: 1px solid rgba(#000, .12);
-  }
-
-   // Demo purposes only
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
+  // Demo purposes only
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
 </style>

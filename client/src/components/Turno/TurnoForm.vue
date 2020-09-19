@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import ClientService from '@/services/ClientService'
+  import ClienteService from '@/services/ClienteService'
   import TurnoFormDetails from './TurnoFormDetails'
   import format from 'date-fns/format'
 
@@ -86,10 +86,10 @@
       ]
     }),
     methods: {
-      getClient () {
-        ClientService.getClient({ id: this.$route.params.idclient })
-        .then((client) => {
-          this.clientName = client.data.firstName + ' ' + client.data.lastName
+      getCliente () {
+        ClienteService.getCliente({ id: this.$route.params.idCliente })
+        .then((cliente) => {
+          this.clienteName = cliente.data.firstName + ' ' + cliente.data.lastName
         })
       },
       getFormat () {

@@ -1,8 +1,8 @@
 <template>
-  <div class="clients">
+  <div class="clientes">
     <md-autocomplete
-      v-model="selectedClient"
-      :md-options="getSanitizedClients"
+      v-model="selectedCliente"
+      :md-options="getSanitizedClientes"
       :md-open-on-focus="false"
       md-layout="box"
       @md-selected="onSelect"
@@ -18,9 +18,9 @@
       <md-tooltip md-direction="bottom">Agregar cliente</md-tooltip>
     </md-button>
 
-    <md-list class="md-double-line" v-if="clients.length > 0" >
+    <md-list class="md-double-line" v-if="clientes.length > 0" >
 
-      <md-list-item v-for="(item, index) in clients" v-bind:key="index" v-on:click="goToDetails(item._id)">
+      <md-list-item v-for="(item, index) in clientes" v-bind:key="index" v-on:click="goToDetails(item._id)">
         <md-icon class="md-primary">person</md-icon>
         <div class="md-list-item-text">
           <span>{{ item.firstName }} {{ item.lastName }}</span>
@@ -40,42 +40,42 @@
 </template>
 
 <script>
-import ClientService from '@/services/ClientService'
+import ClienteService from '@/services/ClienteService'
 export default {
-  name: 'Clients',
+  name: 'Clientes',
   computed: {
-    getSanitizedClients () {
-      return this.clients.map(client => ({
-        'id': client._id,
-        'name': client.firstName + ' ' + client.lastName,
-        'toLowerCase': () => client.firstName.toLowerCase(),
-        'toString': () => client.fistName
+    getSanitizedClientes () {
+      return this.clientes.map(cliente => ({
+        'id': cliente._id,
+        'name': cliente.firstName + ' ' + cliente.lastName,
+        'toLowerCase': () => cliente.firstName.toLowerCase(),
+        'toString': () => cliente.fistName
       }))
     }
   },
   data: () => ({
-    clients: [],
-    selectedClient: null
+    clientes: [],
+    selectedCliente: null
   }),
   mounted () {
     this.$emit('on-mounted-events', 'Clientes')
-    this.getClients()
+    this.getClientes()
   },
   methods: {
-    getClients () {
-      ClientService.fetchClients()
+    getClientes () {
+      ClienteService.fetchClientes()
       .then((response) => {
-        this.clients = response.data.clients
+        this.clientes = response.data.clients
       })
     },
     onSelect (val) {
       this.goToDetails(val.id)
     },
     goToDetails (id) {
-      this.$router.push({ name: 'ClientDetails', params: { id } })
+      this.$router.push({ name: 'ClienteDetails', params: { id } })
     },
     goToNew () {
-      this.$router.push({ name: 'ClientForm', params: { id: null } })
+      this.$router.push({ name: 'ClienteForm', params: { id: null } })
     }
   }
 }

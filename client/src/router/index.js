@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Calendar from '@/components/Calendar'
-import Clients from '@/components/Clients'
-import ClientDetails from '@/components/ClientDetails'
-import ClientForm from '@/components/ClientForm'
-import TurnoForm from '@/components/TurnoForm'
-import Tratamientos from '@/components/Tratamientos'
-import TratamientoForm from '@/components/TratamientoForm'
+import Calendar from '@/components/components/Calendar'
+import Clientes from '@/components/Cliente/Clientes'
+import ClienteDetails from '@/components/Cliente/ClienteDetails'
+import ClienteForm from '@/components/Cliente/ClienteForm'
+import TurnoForm from '@/components/Turno/TurnoForm'
+import Tratamientos from '@/components/Tratamiento/Tratamientos'
+import TratamientoForm from '@/components/Tratamiento/TratamientoForm'
 
 Vue.use(Router)
 
@@ -19,22 +19,22 @@ export default new Router({
       name: 'Calendar'
     },
     {
-      path: '/clients',
-      component: Clients,
-      name: 'Clients'
+      path: '/clientes',
+      component: Clientes,
+      name: 'Clientes'
     },
     {
-      path: '/client/:id',
-      component: ClientDetails,
-      name: 'ClientDetails'
+      path: '/cliente/:id',
+      component: ClienteDetails,
+      name: 'ClienteDetails'
     },
     {
-      path: '/clientform/:id',
-      component: ClientForm,
-      name: 'ClientForm'
+      path: '/clienteform/:id',
+      component: ClienteForm,
+      name: 'ClienteForm'
     },
     {
-      path: '/turnofrom/:idclient',
+      path: '/turnofrom/:idcliente',
       component: TurnoForm,
       name: 'TurnoForm'
     },
