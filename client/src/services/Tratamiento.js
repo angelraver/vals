@@ -1,23 +1,23 @@
 import Api from '@/services/Api'
 
 export default {
-  fetchTratamientos () {
+  fetch () {
     return Api().get('tratamientos')
   },
 
-  addTratamiento (params) {
+  add (params) {
     return Api().post('tratamiento_add', params)
   },
 
-  updateTratamiento (params) {
+  update (params) {
     return Api().put('tratamiento/' + params.id, params)
   },
 
-  getTratamiento (params) {
+  get (params) {
     return Api().get('tratamiento/' + params.id)
   },
 
-  deleteTratamiento (id) {
+  delete (id) {
     return Api().delete('tratamiento/' + id)
   }
 }

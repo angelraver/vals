@@ -5,7 +5,7 @@
       <md-tooltip md-direction="bottom">Agregar tratamiento</md-tooltip>
     </md-button>
 
-    <md-list class="md-double-line" v-if="tratamientos.length > 0" >
+    <md-list class="md-double-line" >
       <div v-for="(item, index) in tratamientos" v-bind:key="index">
         <md-list-item>
           <div class="md-list-item-text">
@@ -22,8 +22,8 @@
       </div>
     </md-list>
 
-    <div v-else>
-      <h2>No hay tratamientos para listar.</h2>
+    <div v-if="tratamientos.length < 1">
+      <p>No hay tratamientos para listar.</p>
     </div>
 
     <md-snackbar :md-active.sync="this.$route.params.saved">Los datos se guardaron correctamente.</md-snackbar>
@@ -32,20 +32,19 @@
 </template>
 
 <script>
-import TratamientoService from '@/services/TratamientoService'
+import TratamientoService from '@/services/Tratamiento'
 export default {
   name: 'Tratamientos',
   data: () => ({
-    tratamientos: [],
-    selectedTratamiento: null
+    tratamientos: []
   }),
   mounted () {
-    this.$emit('on-mounted-events', 'Tratamientos')
+    this.$emit('set-title', 'Tratamientos')
     this.getTratamientos()
   },
   methods: {
     getTratamientos () {
-      TratamientoService.fetchTratamientos()
+      TratamientoService.fetch()
       .then((response) => {
         this.tratamientos = response.data.tratamientos
       })

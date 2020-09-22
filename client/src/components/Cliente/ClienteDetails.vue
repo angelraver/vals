@@ -5,13 +5,12 @@
         <div class="md-title">{{ firstName }} {{ lastName }}</div>
         <div class="md-subhead" v-if="phone">
           <a :href="'tel:' + phone" >
-          <img src="/static/wasap.png" />
+          <img src="/static/images/wasap.png" />
           {{ phone }}
           </a>
         </div>
         <div class="md-subhead">{{ gender === 'M' ? 'Mujer' : 'Hombre' }}</div>
       </md-card-header>
-
       <md-card-content>
         {{ description }}
       </md-card-content>
@@ -22,20 +21,18 @@
       <md-tooltip md-direction="bottom">Agregar turno</md-tooltip>
     </md-button>
 
-    <md-button class="md-primary md-raised button-bottom" v-on:click="goToEdit()">
-      EDITAR
-    </md-button>
+    <md-button class="md-secondary md-raised button-bottom" @click="goToEdit()">Editar</md-button>
 
-    <dialog-confirm
-      buttonText="Eliminar"
-      title="Eliminar Cliente"
-      content="Estás a punto de eliminar éste cliente. Estás seguro que quieres hacerlo?"
-      confirmText="Eliminarlo"
-      cancelText="Cancelar"
-      v-bind:onConfirm="deleteCliente"
-      class="button-bottom"
-    >
-    </dialog-confirm>
+    <md-button class="md-secondary md-raised  button-bottom" @click="showDeleteDialog = true">Eliminar</md-button>
+
+    <md-dialog-confirm
+      :md-active.sync="showDeleteDialog"
+      md-title="Eliminar Cliente"
+      md-content="Estás a punto de eliminar éste cliente."
+      md-confirm-text="Aceptar"
+      md-cancel-text="Cancelar"
+      @md-confirm="deleteCliente"
+    />
 
     <md-snackbar :md-active.sync="this.$route.params.saved">Los datos se guardaron correctamente.</md-snackbar>
 
@@ -43,14 +40,12 @@
 </template>
 
 <script>
-  import ClienteService from '@/services/ClienteService'
-  import DialogConfirm from '@/components/components/DialogConfirm'
+  import ClienteService from '@/services/Cliente'
 
   export default {
     name: 'ClienteDetails',
-    components: { DialogConfirm },
     mounted () {
-      this.$emit('on-mounted-events', 'Detalle de cliente')
+      this.$emit('set-title', 'Detalle de cliente')
       if (this.$route.params.id) {
         this.getCliente()
       }
@@ -61,11 +56,12 @@
       phone: '',
       gender: '',
       email: '',
-      description: ''
+      description: '',
+      showDeleteDialog: false
     }),
     methods: {
       getCliente () {
-        ClienteService.getCliente({ id: this.$route.params.id })
+        ClienteService.get({ id: this.$route.params.id })
         .then((cliente) => {
           this.firstName = cliente.data.firstName
           this.lastName = cliente.data.lastName
@@ -76,7 +72,7 @@
         })
       },
       deleteCliente () {
-        ClienteService.deleteCliente(this.$route.params.id).then(() => {
+        ClienteService.delete(this.$route.params.id).then(() => {
           this.$router.push({ name: 'Clientes', params: { saved: true } })
         })
       },

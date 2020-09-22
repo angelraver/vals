@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Landing from '@/components/Landing'
 import Calendar from '@/components/components/Calendar'
 import Clientes from '@/components/Cliente/Clientes'
 import ClienteDetails from '@/components/Cliente/ClienteDetails'
@@ -13,6 +14,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/',
+      component: Landing,
+      name: 'Landing'
+    },
     {
       path: '/canlendar',
       component: Calendar,
@@ -34,7 +40,7 @@ export default new Router({
       name: 'ClienteForm'
     },
     {
-      path: '/turnofrom/:idcliente',
+      path: '/turnoform/:idCliente',
       component: TurnoForm,
       name: 'TurnoForm'
     },

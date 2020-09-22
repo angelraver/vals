@@ -77,7 +77,7 @@
 </template>
 
 <script>
-  import ClienteService from '@/services/ClienteService'
+  import ClienteService from '@/services/Cliente'
   import { validationMixin } from 'vuelidate'
   import {
     required,
@@ -93,14 +93,14 @@
         firstName: null,
         lastName: null,
         phone: null,
-        gender: null,
+        gender: 'M',
         email: null,
         description: null
       },
       sending: false
     }),
     mounted () {
-      this.$emit('on-mounted-events', 'Cliente')
+      this.$emit('set-title', 'Cliente')
       if (this.$route.params.id) {
         this.title = 'Modificar Cliente'
         this.getCliente()
@@ -120,7 +120,7 @@
         this.$router.push({ name: 'Clientes', params: {} })
       },
       async getCliente () {
-        const response = await ClienteService.getCliente({ id: this.$route.params.id })
+        const response = await ClienteService.get({ id: this.$route.params.id })
         return response.data
       },
       getValidationClass (fieldName) {
@@ -135,12 +135,12 @@
       saveForm () {
         this.sending = true
         if (this.form.id) {
-          ClienteService.updateCliente(this.form).then(() => {
+          ClienteService.update(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'ClienteDetails', params: { id: this.form.id, saved: true } })
           })
         } else {
-          ClienteService.addCliente(this.form).then(() => {
+          ClienteService.add(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Clientes', params: { saved: true } })
           })

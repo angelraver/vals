@@ -1,8 +1,8 @@
 <template>
   <div>
-    <md-card class="md-layout-item md-size-50 md-small-size-100">
+    <md-card>
       <md-card-header>
-        <div class="md-title">Nuevo turno para<br /> {{clientName}}</div>
+        <div class="md-title">Nuevo turno para {{nuevoTurno.cliente.nombre}}</div>
       </md-card-header>
       <md-card-content>
         <div class="md-layout md-gutter">
@@ -15,99 +15,104 @@
           </md-datepicker>
         </div>
       </md-card-content>
-
-      <div v-if="selectedDate">
-        <md-list class="md-double-line md-dense">
-          <div v-for="(item, index) in horas" v-bind:key="index" v-on:click="showTratamiento(item.text)">
-            <md-list-item class="horas-item">
-              <md-avatar>
-                {{ item.text }}
-              </md-avatar>
-
-              <div class="md-list-item-text">
-                <span></span>
-                <p></p>
-              </div>
-
-              <md-button class="md-icon-button md-list-action">
-                <md-icon class="md-primary">alarm</md-icon>
-              </md-button>
-            </md-list-item>
-            <md-divider class="md-inset"></md-divider>
-          </div>
-        </md-list>
-      </div>
+      
+      <turnos-horas
+        v-if="selectedDate"
+        :fecha="dateFormated"
+        :id-turno-cancelled="idTurnoCancelled"
+        @hora-selected="horaSelected"
+        @turno-to-cancel="turnoToCancel"
+      />
 
     </md-card>
 
-    <md-dialog :md-active.sync="showDialog">
-      <turno-form-details />
-    </md-dialog>
+    <tratamiento-pick v-if="showTratamientos" @tratamiento-selected="tratamientoSelected" />
+
+    <md-dialog-confirm
+      :md-active.sync="showCancelDialog"
+      md-title="Cancelar Turno"
+      :md-content="cancelText"
+      md-confirm-text="Aceptar"
+      md-cancel-text="Cancelar"
+      @md-confirm="cancelTurno"
+    />
+
 
   </div>
 </template>
 
 <script>
-  import ClienteService from '@/services/ClienteService'
-  import TurnoFormDetails from './TurnoFormDetails'
-  import format from 'date-fns/format'
+import ClienteService from '@/services/Cliente'
+import TurnoService from '@/services/Turno'
+import TratamientoPick from '@/components/Tratamiento/TratamientoPick'
+import TurnosHoras from '@/components/Turno/TurnosHoras'
+import format from 'date-fns/format'
 
-  export default {
-    name: 'TurnoForm',
-    components: {
-      TurnoFormDetails
+export default {
+  name: 'TurnoForm',
+  components: { TratamientoPick, TurnosHoras },
+  mounted () {
+    this.$emit('set-title', 'Crear turno')
+    if (this.$route.params.idCliente) this.getCliente()
+    this.$material.locale.dateFormat = this.dateFormat
+  },
+  data: () => ({
+    nuevoTurno: {
+      fecha: {},
+      cliente: {},
+      tratamiento: {}
     },
-    mounted () {
-      this.$emit('on-mounted-events', 'Crear turno')
-      if (this.$route.params.idclient) this.getClient()
-      this.$material.locale.dateFormat = this.dateFormat
+    cancelText: '',
+    idTurnoToCancel: null,
+    idTurnoCancelled: null,
+    showTratamientos: false,
+    showCancelDialog: false,
+    dateFormat: 'dd/MM/yyyy',
+    selectedDate: null,
+    disabledDates: date => {
+      const day = date.getDay()
+      return day === 0
+    }
+  }),
+  computed: {
+    dateFormated () {
+      return format(this.selectedDate, this.dateFormat)
+    }
+  },
+  methods: {
+    getCliente () {
+      ClienteService.get({ id: this.$route.params.idCliente })
+      .then((cliente) => {
+        this.nuevoTurno.cliente = {
+          id: cliente.data._id,
+          nombre: cliente.data.firstName + ' ' + cliente.data.lastName
+        }
+      })
     },
-    data: () => ({
-      showDialog: false,
-      dateFormat: 'dd/MM/yyyy',
-      clientName: '',
-      selectedDate: null,
-      disabledDates: date => {
-        const day = date.getDay()
-        return day === 0
-      },
-      horas: [
-        { id: 9, text: '9:00' },
-        { id: 10, text: '10:00' },
-        { id: 11, text: '11:00' },
-        { id: 12, text: '12:00' },
-        { id: 13, text: '13:00' },
-        { id: 14, text: '14:00' },
-        { id: 15, text: '15:00' },
-        { id: 16, text: '16:00' },
-        { id: 17, text: '17:00' },
-        { id: 18, text: '18:00' },
-        { id: 19, text: '19:00' }
-      ]
-    }),
-    methods: {
-      getCliente () {
-        ClienteService.getCliente({ id: this.$route.params.idCliente })
-        .then((cliente) => {
-          this.clienteName = cliente.data.firstName + ' ' + cliente.data.lastName
-        })
-      },
-      getFormat () {
-        return this.selectedDate ? format(this.selectedDate, this.dateFormat) : 'NO DATE'
-      },
-      showTratamiento (hora) {
-        this.showDialog = true
-        console.log(hora)
-      }
+    horaSelected (hora) {
+      this.showTratamientos = true
+      this.nuevoTurno.fecha.dia = this.dateFormated
+      this.nuevoTurno.fecha.hora = hora
+    },
+    tratamientoSelected (tratamiento) {
+      this.showTratamientos = false
+      this.nuevoTurno.tratamiento = tratamiento
+      TurnoService.add(this.nuevoTurno).then(() => {
+        this.$router.push({ name: 'ClienteDetails', params: { id: this.nuevoTurno.cliente.id } })
+      })
+    },
+    turnoToCancel (turno) {
+      this.showCancelDialog = true
+      this.cancelText = `${turno.fecha.dia} a las ${turno.fecha.hora} : ${turno.cliente.nombre} - ${turno.tratamiento.titulo} Estás a punto de cancelar éste turno.`
+      this.idTurnoToCancel = turno._id
+    },
+    cancelTurno () {
+      TurnoService.delete(this.idTurnoToCancel).then(() => {
+        console.log('Deleted!')
+        this.idTurnoCancelled = this.idTurnoToCancel
+      })
     }
   }
+}
 </script>
-<style lang="scss" scoped>
-  .md-avatar {
-    width: 3em !important;
-  }
-
-  .horas-item:hover {
-    background: #03dac5;
-  }
-</style>
+ 

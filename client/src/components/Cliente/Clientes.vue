@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import ClienteService from '@/services/ClienteService'
+import ClienteService from '@/services/Cliente'
 export default {
   name: 'Clientes',
   computed: {
@@ -58,12 +58,12 @@ export default {
     selectedCliente: null
   }),
   mounted () {
-    this.$emit('on-mounted-events', 'Clientes')
+    this.$emit('set-title', 'Clientes')
     this.getClientes()
   },
   methods: {
     getClientes () {
-      ClienteService.fetchClientes()
+      ClienteService.fetch()
       .then((response) => {
         this.clientes = response.data.clients
       })

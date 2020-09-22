@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import TratamientoService from '@/services/TratamientoService'
+  import TratamientoService from '@/services/Tratamiento'
   import { validationMixin } from 'vuelidate'
   import {
     required
@@ -81,7 +81,7 @@
       sending: false
     }),
     mounted () {
-      this.$emit('on-mounted-events', 'Tratamiento')
+      this.$emit('set-title', 'Tratamiento')
       if (this.$route.params.id) {
         this.title = 'Modificar Tratamiento'
         this.getTratamiento()
@@ -99,7 +99,7 @@
         this.$router.push({ name: 'Tratamientos', params: {} })
       },
       async getTratamiento () {
-        const response = await TratamientoService.getTratamiento({ id: this.$route.params.id })
+        const response = await TratamientoService.get({ id: this.$route.params.id })
         return response.data
       },
       getValidationClass (fieldName) {
@@ -114,12 +114,12 @@
       saveForm () {
         this.sending = true
         if (this.form.id) {
-          TratamientoService.updateTratamiento(this.form).then(() => {
+          TratamientoService.update(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Tratamientos', params: { saved: true } })
           })
         } else {
-          TratamientoService.addTratamiento(this.form).then(() => {
+          TratamientoService.add(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Tratamientos', params: { saved: true } })
           })

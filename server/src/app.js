@@ -9,9 +9,10 @@ app.use(bodyParser.json())
 app.use(cors())
 
 const mongodb_conn_module = require('./mongodbConnModule');
-var db = mongodb_conn_module.connect();
+mongodb_conn_module.connect();
 var ClientController = require("../controllers/client");
 var TratamientoController = require("../controllers/tratamiento");
+var TurnoController = require("../controllers/turno");
 
 app.get('/clients', ClientController.getAll);
 app.post('/client_add', ClientController.add);
@@ -24,5 +25,11 @@ app.post('/tratamiento_add', TratamientoController.add);
 app.put('/tratamiento/:id', TratamientoController.update);
 app.delete('/tratamiento/:id', TratamientoController.delete);
 app.get('/tratamiento/:id', TratamientoController.get);
+
+app.post('/turnos', TurnoController.getByFecha);
+app.post('/turno_add', TurnoController.add);
+app.delete('/turno/:id', TurnoController.delete);
+app.get('/turno/:id', TurnoController.get);
+
 
 app.listen(process.env.PORT || 8001)
