@@ -9,10 +9,6 @@ export default {
     return Api().post('turno_add', params)
   },
 
-  get (params) {
-    return Api().get('turno/' + params.id)
-  },
-
   delete (id) {
     return Api().delete('turno/' + id)
   }

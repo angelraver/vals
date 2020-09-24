@@ -33,9 +33,9 @@ export default {
     this.getTratamientos()
   },
   methods: {
-    getTratamientos () {
-      TratamientoService.fetch().then((response) => {
-        this.tratamientos = response.data.tratamientos
+    async getTratamientos () {
+      await TratamientoService.fetch().then((response) => {
+        this.tratamientos = response.data
       })
     },
     tratamientoSelected () {

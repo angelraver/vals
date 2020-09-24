@@ -104,15 +104,6 @@
       if (this.$route.params.id) {
         this.title = 'Modificar Cliente'
         this.getCliente()
-        .then((client) => {
-          this.form.firstName = client.firstName
-          this.form.lastName = client.lastName
-          this.form.phone = client.phone
-          this.form.gender = client.gender
-          this.form.email = client.email
-          this.form.description = client.description
-          this.form.id = this.$route.params.id
-        })
       }
     },
     methods: {
@@ -120,8 +111,17 @@
         this.$router.push({ name: 'Clientes', params: {} })
       },
       async getCliente () {
-        const response = await ClienteService.get({ id: this.$route.params.id })
-        return response.data
+        await ClienteService.get({ id: this.$route.params.id })
+        .then((response) => {
+          let c = response.data
+          this.form.firstName = c.firstName
+          this.form.lastName = c.lastName
+          this.form.phone = c.phone
+          this.form.gender = c.gender
+          this.form.email = c.email
+          this.form.description = c.description
+          this.form.id = this.$route.params.id
+        })
       },
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
@@ -132,15 +132,15 @@
           }
         }
       },
-      saveForm () {
+      async saveForm () {
         this.sending = true
         if (this.form.id) {
-          ClienteService.update(this.form).then(() => {
+          await ClienteService.update(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'ClienteDetails', params: { id: this.form.id, saved: true } })
           })
         } else {
-          ClienteService.add(this.form).then(() => {
+          await ClienteService.add(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Clientes', params: { saved: true } })
           })

@@ -31,7 +31,7 @@
     </md-list>
 
     <div v-else>
-      <h2>No hay clientes para listar.</h2>
+      <h3>No hay clientes para listar.</h3>
     </div>
 
     <md-snackbar :md-active.sync="this.$route.params.saved">Los datos se guardaron correctamente.</md-snackbar>
@@ -62,10 +62,10 @@ export default {
     this.getClientes()
   },
   methods: {
-    getClientes () {
-      ClienteService.fetch()
+    async getClientes () {
+      await ClienteService.fetch()
       .then((response) => {
-        this.clientes = response.data.clients
+        this.clientes = response.data
       })
     },
     onSelect (val) {

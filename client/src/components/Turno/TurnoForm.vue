@@ -80,8 +80,8 @@ export default {
     }
   },
   methods: {
-    getCliente () {
-      ClienteService.get({ id: this.$route.params.idCliente })
+    async getCliente () {
+      await ClienteService.get({ id: this.$route.params.idCliente })
       .then((cliente) => {
         this.nuevoTurno.cliente = {
           id: cliente.data._id,
@@ -94,10 +94,10 @@ export default {
       this.nuevoTurno.fecha.dia = this.dateFormated
       this.nuevoTurno.fecha.hora = hora
     },
-    tratamientoSelected (tratamiento) {
+    async tratamientoSelected (tratamiento) {
       this.showTratamientos = false
       this.nuevoTurno.tratamiento = tratamiento
-      TurnoService.add(this.nuevoTurno).then(() => {
+      await TurnoService.add(this.nuevoTurno).then(() => {
         this.$router.push({ name: 'ClienteDetails', params: { id: this.nuevoTurno.cliente.id } })
       })
     },
@@ -106,8 +106,8 @@ export default {
       this.cancelText = `${turno.fecha.dia} a las ${turno.fecha.hora} : ${turno.cliente.nombre} - ${turno.tratamiento.titulo} Estás a punto de cancelar éste turno.`
       this.idTurnoToCancel = turno._id
     },
-    cancelTurno () {
-      TurnoService.delete(this.idTurnoToCancel).then(() => {
+    async cancelTurno () {
+      await TurnoService.delete(this.idTurnoToCancel).then(() => {
         console.log('Deleted!')
         this.idTurnoCancelled = this.idTurnoToCancel
       })

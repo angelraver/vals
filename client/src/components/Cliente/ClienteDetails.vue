@@ -5,8 +5,8 @@
         <div class="md-title">{{ firstName }} {{ lastName }}</div>
         <div class="md-subhead" v-if="phone">
           <a :href="'tel:' + phone" >
-          <img src="/static/images/wasap.png" />
-          {{ phone }}
+            <img src="/static/images/wasap.png" />
+            {{ phone }}
           </a>
         </div>
         <div class="md-subhead">{{ gender === 'M' ? 'Mujer' : 'Hombre' }}</div>
@@ -60,19 +60,20 @@
       showDeleteDialog: false
     }),
     methods: {
-      getCliente () {
-        ClienteService.get({ id: this.$route.params.id })
-        .then((cliente) => {
-          this.firstName = cliente.data.firstName
-          this.lastName = cliente.data.lastName
-          this.phone = cliente.data.phone
-          this.gender = cliente.data.gender
-          this.email = cliente.data.email
-          this.description = cliente.data.description
+      async getCliente () {
+        await ClienteService.get({ id: this.$route.params.id })
+        .then((response) => {
+          let c = response.data
+          this.firstName = c.firstName
+          this.lastName = c.lastName
+          this.phone = c.phone
+          this.gender = c.gender
+          this.email = c.email
+          this.description = c.description
         })
       },
-      deleteCliente () {
-        ClienteService.delete(this.$route.params.id).then(() => {
+      async deleteCliente () {
+        await ClienteService.delete(this.$route.params.id).then(() => {
           this.$router.push({ name: 'Clientes', params: { saved: true } })
         })
       },

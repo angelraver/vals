@@ -1,7 +1,0 @@
-- los elementos text area se sobresalen de su contenedor.
-- client nuevo / editar el campo celular no tiene límite. email tambien.
-- en el detalle del cliente agregar un historial de turnos.
-- agregar un módulo de empleados
-- formulario de TURNO 
-  - Tratamiento (combo)
-  - Empleada (combo)

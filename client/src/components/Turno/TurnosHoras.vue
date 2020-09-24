@@ -66,11 +66,12 @@ export default {
     cancel (turno) {
       this.$emit('turno-to-cancel', turno)
     },
-    getTurnosHoras () {
-      TurnoService.fetch({ fecha: this.fecha })
+    async getTurnosHoras () {
+      await TurnoService.fetch({ fecha: this.fecha })
       .then((response) => {
+        console.log(response.data)
         this.turnosHoras = horas(8, 20).map((hora) => {
-          return response.data.turnos.find(turno => turno.fecha.hora === hora) || { fecha: { hora } }
+          return response.data.find(turno => turno.fecha.hora === hora) || { fecha: { hora } }
         })
       })
     }

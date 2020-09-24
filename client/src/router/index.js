@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Landing from '@/components/Landing'
+import TurnosLanding from '@/components/Turno/TurnosLanding'
 import Calendar from '@/components/components/Calendar'
 import Clientes from '@/components/Cliente/Clientes'
 import ClienteDetails from '@/components/Cliente/ClienteDetails'
@@ -18,6 +19,11 @@ export default new Router({
       path: '/',
       component: Landing,
       name: 'Landing'
+    },
+    {
+      path: '/turnos',
+      component: TurnosLanding,
+      name: 'TurnosLanding'
     },
     {
       path: '/canlendar',

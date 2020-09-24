@@ -43,10 +43,10 @@ export default {
     this.getTratamientos()
   },
   methods: {
-    getTratamientos () {
-      TratamientoService.fetch()
+    async getTratamientos () {
+      await TratamientoService.fetch()
       .then((response) => {
-        this.tratamientos = response.data.tratamientos
+        this.tratamientos = response.data
       })
     },
     goToEdit (id) {

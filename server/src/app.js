@@ -26,10 +26,8 @@ app.put('/tratamiento/:id', TratamientoController.update);
 app.delete('/tratamiento/:id', TratamientoController.delete);
 app.get('/tratamiento/:id', TratamientoController.get);
 
-app.post('/turnos', TurnoController.getByFecha);
+app.post('/turnos', TurnoController.get);
 app.post('/turno_add', TurnoController.add);
 app.delete('/turno/:id', TurnoController.delete);
-app.get('/turno/:id', TurnoController.get);
-
 
 app.listen(process.env.PORT || 8001)

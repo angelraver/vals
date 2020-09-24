@@ -7,10 +7,12 @@
       </md-list-item>
     </router-link>
 
-    <md-list-item>
-      <md-icon>calendar_today</md-icon>
-      <span class="md-list-item-text">Turnos</span>
-    </md-list-item>
+    <router-link v-bind:to="{ name: 'TurnosLanding' }" class="md-primary">
+      <md-list-item>
+        <md-icon>calendar_today</md-icon>
+        <span class="md-list-item-text">Turnos</span>
+      </md-list-item>
+    </router-link>
 
     <router-link v-bind:to="{ name: 'Clientes' }" class="md-primary">
       <md-list-item>

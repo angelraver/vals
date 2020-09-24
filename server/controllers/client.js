@@ -3,9 +3,7 @@ var Client = require("../models/client");
 exports.getAll = function(req, res) {
   Client.find({}, 'firstName lastName gender email phone description', function (error, clients) {
 	  if (error) { console.error(error); }
-	  res.send({
-			clients
-		})
+	  res.send(clients)
 	}).sort({_id:-1})
 };
 
@@ -27,12 +25,8 @@ exports.add = function(req, res) {
 	})
 
 	client.save(function (error) {
-		if (error) {
-			console.log(error)
-		}
-		res.send({
-			success: true
-		})
+		if (error) { console.log(error) }
+		res.send({ success: true })
 	})
 }
 
@@ -48,12 +42,8 @@ exports.update = function (req, res) {
 		client.description = req.body.description
 
 	  client.save(function (error) {
-			if (error) {
-				console.log(error)
-			}
-			res.send({
-				success: true
-			})
+			if (error) { console.log(error) }
+			res.send({ success: true })
 		})
 	})
 }

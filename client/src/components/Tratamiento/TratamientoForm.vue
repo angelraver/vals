@@ -85,13 +85,6 @@
       if (this.$route.params.id) {
         this.title = 'Modificar Tratamiento'
         this.getTratamiento()
-        .then((tratamiento) => {
-          this.form.titulo = tratamiento.titulo
-          this.form.descripcion = tratamiento.descripcion
-          this.form.precio = tratamiento.precio
-          this.form.duracion = tratamiento.duracion
-          this.form.id = this.$route.params.id
-        })
       }
     },
     methods: {
@@ -99,8 +92,15 @@
         this.$router.push({ name: 'Tratamientos', params: {} })
       },
       async getTratamiento () {
-        const response = await TratamientoService.get({ id: this.$route.params.id })
-        return response.data
+        await TratamientoService.get({ id: this.$route.params.id })
+        .then((tratamiento) => {
+          let t = tratamiento.data
+          this.form.titulo = t.titulo
+          this.form.descripcion = t.descripcion
+          this.form.precio = t.precio
+          this.form.duracion = t.duracion
+          this.form.id = this.$route.params.id
+        })
       },
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
@@ -111,15 +111,15 @@
           }
         }
       },
-      saveForm () {
+      async saveForm () {
         this.sending = true
         if (this.form.id) {
-          TratamientoService.update(this.form).then(() => {
+          await TratamientoService.update(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Tratamientos', params: { saved: true } })
           })
         } else {
-          TratamientoService.add(this.form).then(() => {
+          await TratamientoService.add(this.form).then(() => {
             this.sending = false
             this.$router.push({ name: 'Tratamientos', params: { saved: true } })
           })
