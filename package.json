@@ -1,0 +1,45 @@
+{
+  "name": "vals",
+  "version": "1.0.0",
+  "description": "Vals admin",
+  "main": "config/index.js",
+  "author": "angel raver",
+  "private": true,
+  "keywords": [],
+  "license": "ISC",
+  "scripts": {
+    "start": "./node_modules/nodemon/bin/nodemon.js app.js & node build/dev-server.js",
+    "build": "node build/build.js",
+    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
+    "e2e": "node test/e2e/runner.js",
+    "test": "npm run unit && npm run e2e",
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "mongoose": "^5.9.2",
+    "morgan": "^1.8.2",
+    "nodemon": "^1.12.1",
+    "@types/date-fns": "^2.6.0",
+    "axios": "^0.19.2",
+    "date-fns": "^2.10.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.3.1",
+    "vue": "latest",
+    "vue-material": "latest",
+    "vue-router": "^2.7.0",
+    "vue-sweetalert2": "^1.0.7",
+    "vuelidate": "^0.7.5"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

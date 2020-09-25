@@ -10,9 +10,9 @@ app.use(cors())
 
 const mongodb_conn_module = require('./mongodbConnModule');
 mongodb_conn_module.connect();
-var ClientController = require("../controllers/client");
-var TratamientoController = require("../controllers/tratamiento");
-var TurnoController = require("../controllers/turno");
+var ClientController = require("./controllers/client");
+var TratamientoController = require("./controllers/tratamiento");
+var TurnoController = require("./controllers/turno");
 
 app.get('/clients', ClientController.getAll);
 app.post('/client_add', ClientController.add);
