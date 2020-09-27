@@ -1,5 +1,5 @@
 <template>
-  <form novalidate class="md-layout" @submit.prevent="validateForm">
+  <form novalidate @submit.prevent="validateForm">
 
     <md-button type="submit" class="md-fab md-primary button-top" :disabled="sending">
       <md-icon>save</md-icon>
@@ -9,53 +9,38 @@
       <md-icon>arrow_back</md-icon>
     </md-button>
 
-    <md-card class="md-layout-item md-size-50 md-small-size-100">
-      <md-card-header>
-        <div class="md-title">{{title}}</div>
-      </md-card-header>
+    <div class="md-layout md-gutter">
+      <md-field :class="getValidationClass('titulo')">
+        <label for="titulo">Titulo</label>
+        <md-input name="titulo" id="titulo" v-model="form.titulo" :disabled="sending" />
+        <span class="md-error" v-if="!$v.form.titulo.required">Este campo es obligatorio.</span>
+      </md-field>
 
-      <md-card-content>
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('titulo')">
-              <label for="titulo">Titulo</label>
-              <md-input name="titulo" id="titulo" v-model="form.titulo" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.titulo.required">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+      <md-field :class="getValidationClass('duracion')">
+        <label for="duracion">Duración (en minutos)</label>
+        <md-select name="duracion" id="duracion" v-model="form.duracion" md-dense :disabled="sending">
+          <md-option value="15">15</md-option>
+          <md-option value="30">30</md-option>
+          <md-option value="45">45</md-option>
+          <md-option value="60">60</md-option>
+        </md-select>
+        <span class="md-error">Este campo es obligatorio.</span>
+      </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('duracion')">
-              <label for="duracion">Duración (en minutos)</label>
-              <md-select name="duracion" id="duracion" v-model="form.duracion" md-dense :disabled="sending">
-                <md-option value="15">15</md-option>
-                <md-option value="30">30</md-option>
-                <md-option value="45">45</md-option>
-                <md-option value="60">60</md-option>
-              </md-select>
-              <span class="md-error">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+      <md-field :class="getValidationClass('precio')">
+        <label for="precio">Precio</label>
+        <md-input name="precio" id="precio" v-model="form.precio" :disabled="sending" />
+        <span class="md-error" v-if="!$v.form.precio.required">Este campo es obligatorio.</span>
+      </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('precio')">
-              <label for="precio">Precio</label>
-              <md-input name="precio" id="precio" v-model="form.precio" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.precio.required">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+      <md-field>
+        <label>Descripción</label>
+        <md-textarea name="descripcion" id="descripcion" v-model="form.descripcion"></md-textarea>
+      </md-field>
 
-          <md-field>
-            <label>Descripción</label>
-            <md-textarea name="descripcion" id="descripcion" v-model="form.descripcion"></md-textarea>
-          </md-field>
+    </div>
 
-        </div>
-      </md-card-content>
-
-      <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
-    </md-card>
+    <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
   </form>
 </template>

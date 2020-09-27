@@ -1,30 +1,22 @@
 <template>
-  <div>
-    <md-card>
-      <md-card-header>
-        <div class="md-title">Nuevo turno para {{nuevoTurno.cliente.nombre}}</div>
-      </md-card-header>
-      <md-card-content>
-        <div class="md-layout md-gutter">
-          <md-datepicker
-            v-model="selectedDate" 
-            :md-disabled-dates="disabledDates"
-            md-immediately
-          >
-            <label>Elige la fecha</label>
-          </md-datepicker>
-        </div>
-      </md-card-content>
-      
-      <turnos-horas
-        v-if="selectedDate"
-        :fecha="dateFormated"
-        :id-turno-cancelled="idTurnoCancelled"
-        @hora-selected="horaSelected"
-        @turno-to-cancel="turnoToCancel"
-      />
-
-    </md-card>
+  <form>
+    <h2>Nuevo turno para {{nuevoTurno.cliente.nombre}}</h2>
+    <div class="md-layout md-gutter">
+      <md-datepicker
+        v-model="selectedDate" 
+        :md-disabled-dates="disabledDates"
+        md-immediately
+      >
+        <label>Elige la fecha</label>
+      </md-datepicker>
+    </div>
+    <turnos-horas
+      v-if="selectedDate"
+      :fecha="dateFormated"
+      :id-turno-cancelled="idTurnoCancelled"
+      @hora-selected="horaSelected"
+      @turno-to-cancel="turnoToCancel"
+    />
 
     <tratamiento-pick v-if="showTratamientos" @tratamiento-selected="tratamientoSelected" />
 
@@ -37,8 +29,7 @@
       @md-confirm="cancelTurno"
     />
 
-
-  </div>
+  </form>
 </template>
 
 <script>
