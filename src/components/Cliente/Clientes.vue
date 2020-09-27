@@ -1,5 +1,5 @@
 <template>
-  <div class="clientes">
+  <div>
     <md-autocomplete
       v-model="selectedCliente"
       :md-options="getSanitizedClientes"
@@ -29,13 +29,10 @@
       </md-list-item>
 
     </md-list>
-
-    <div v-else>
-      <h3>No hay clientes para listar.</h3>
-    </div>
+    
+    <h3 v-else>No hay clientes para listar.</h3>
 
     <md-snackbar :md-active.sync="this.$route.params.saved">Los datos se guardaron correctamente.</md-snackbar>
-
   </div>
 </template>
 

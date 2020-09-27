@@ -1,77 +1,53 @@
 <template>
-  <form novalidate class="md-layout" @submit.prevent="validateForm">
-
+  <form novalidate @submit.prevent="validateForm">
     <md-button type="submit" class="md-fab md-primary button-top" :disabled="sending">
       <md-icon>save</md-icon>
     </md-button>
-
     <md-button class="md-fab md-primary button-top2" v-on:click="goBack()">
       <md-icon>arrow_back</md-icon>
     </md-button>
 
-    <md-card class="md-layout-item md-size-50 md-small-size-100">
-      <md-card-header>
-        <div class="md-title">{{title}}</div>
-      </md-card-header>
+    <md-field :class="getValidationClass('firstName')">
+      <label for="first-name">Nombre</label>
+      <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
+      <span class="md-error" v-if="!$v.form.firstName.required">Este campo es obligatorio.</span>
+    </md-field>
 
-      <md-card-content>
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('firstName')">
-              <label for="first-name">Nombre</label>
-              <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.firstName.required">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+    <md-field :class="getValidationClass('lastName')">
+      <label for="last-name">Apellido</label>
+      <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
+      <span class="md-error" v-if="!$v.form.lastName.required">Este campo es obligatorio.</span>
+      <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid last name</span>
+    </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('lastName')">
-              <label for="last-name">Apellido</label>
-              <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.lastName.required">Este campo es obligatorio.</span>
-              <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid last name</span>
-            </md-field>
-          </div>
+    <md-field :class="getValidationClass('phone')">
+      <label for="phone">Celular</label>
+      <md-input name="phone" id="phone" v-model="form.phone" :disabled="sending" />
+      <span class="md-error" v-if="!$v.form.phone.required">Este campo es obligatorio.</span>
+    </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('phone')">
-              <label for="phone">Celular</label>
-              <md-input name="phone" id="phone" v-model="form.phone" :disabled="sending" />
-              <span class="md-error" v-if="!$v.form.phone.required">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+    <md-field :class="getValidationClass('gender')">
+      <label for="gender">Género</label>
+      <md-select name="gender" id="gender" v-model="form.gender" md-dense :disabled="sending">
+        <md-option></md-option>
+        <md-option value="M">Mujer</md-option>
+        <md-option value="H">Hombre</md-option>
+      </md-select>
+      <span class="md-error">Este campo es obligatorio.</span>
+    </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('gender')">
-              <label for="gender">Género</label>
-              <md-select name="gender" id="gender" v-model="form.gender" md-dense :disabled="sending">
-                <md-option></md-option>
-                <md-option value="M">Mujer</md-option>
-                <md-option value="H">Hombre</md-option>
-              </md-select>
-              <span class="md-error">Este campo es obligatorio.</span>
-            </md-field>
-          </div>
+    <md-field :class="getValidationClass('email')">
+      <label for="first-email">Email</label>
+      <md-input name="email" id="email" v-model="form.email" :disabled="sending" />
+      <span class="md-error">Email mal escrito.</span>
+    </md-field>
 
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('email')">
-              <label for="first-email">Email</label>
-              <md-input name="email" id="email" v-model="form.email" :disabled="sending" />
-              <span class="md-error">Email mal escrito.</span>
-            </md-field>
-          </div>
+    <md-field>
+      <label>Notas</label>
+      <md-textarea name="description" id="description" v-model="form.description"></md-textarea>
+    </md-field>
 
-          <md-field>
-            <label>Notas</label>
-            <md-textarea name="description" id="description" v-model="form.description"></md-textarea>
-          </md-field>
-
-        </div>
-      </md-card-content>
-
-      <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
-    </md-card>
+    <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
   </form>
 </template>
@@ -100,11 +76,11 @@
       sending: false
     }),
     mounted () {
-      this.$emit('set-title', 'Cliente')
       if (this.$route.params.id) {
-        this.title = 'Modificar Cliente'
+        this.title = 'Editar  Cliente'
         this.getCliente()
       }
+      this.$emit('set-title', this.title)
     },
     methods: {
       goBack () {
@@ -175,12 +151,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .md-progress-bar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-  }
-</style>
