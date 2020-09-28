@@ -5,7 +5,7 @@
         <md-list-item>
           <div class="md-list-item-text">
             <span>{{ item.cliente.nombre }}</span>
-            <span>{{ item.fecha.dia }} {{ item.fecha.hora }}</span>
+            <span>{{ dateLabel(item.fecha.dia) }} {{ item.fecha.hora }}</span>
             <p>{{ item.tratamiento.titulo }}</p>
           </div>
         </md-list-item>
@@ -18,6 +18,7 @@
 
 <script>
 import TurnoService from '@/services/Turno'
+import D from '@/utils/date'
 
 export default {
   name: 'TurnosLanding',
@@ -26,7 +27,7 @@ export default {
   }),
   mounted () {
     this.getTurnos()
-    this.$emit('set-title', 'Próximos turnos')
+    this.$emit('set-title', 'Turnos')
   },
   methods: {
     async getTurnos () {
@@ -34,10 +35,10 @@ export default {
       .then((response) => {
         this.turnos = response.data
       })
+    },
+    dateLabel (date) {
+      return D.getDayNombre(date) + ' ' + D.getDay(date) + ' de ' + D.getMesNombre(date)
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-
-</style>
