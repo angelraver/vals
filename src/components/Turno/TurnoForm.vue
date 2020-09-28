@@ -84,6 +84,7 @@ export default {
       this.showTratamientos = true
       this.nuevoTurno.fecha.dia = this.dateFormated
       this.nuevoTurno.fecha.hora = hora
+      this.nuevoTurno.fecha.raw = this.selectedDate
     },
     async tratamientoSelected (tratamiento) {
       this.showTratamientos = false
