@@ -14,7 +14,7 @@
             <p>{{ item.descripcion }}</p>
           </div>
 
-          <md-button class="md-icon-button md-list-action" v-on:click="goToEdit(item._id)">
+          <md-button class="md-icon-button md-list-action" v-on:click="goToEdit(item.id)">
             <md-icon>edit</md-icon>
           </md-button>
         </md-list-item>

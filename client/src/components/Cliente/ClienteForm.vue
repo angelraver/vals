@@ -44,7 +44,7 @@
 
     <md-field>
       <label>Notas</label>
-      <md-textarea name="description" id="description" v-model="form.description"></md-textarea>
+      <md-textarea name="descripcion" id="descripcion" v-model="form.descripcion"></md-textarea>
     </md-field>
 
     <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -71,7 +71,7 @@
         phone: null,
         gender: 'M',
         email: null,
-        description: null
+        descripcion: null
       },
       sending: false
     }),
@@ -87,15 +87,15 @@
         this.$router.push({ name: 'Clientes', params: {} })
       },
       async getCliente () {
-        await ClienteService.get({ id: this.$route.params.id })
+        await ClienteService.get(this.$route.params.id)
         .then((response) => {
-          let c = response.data
+          let c = response.data[0]
           this.form.firstName = c.firstName
           this.form.lastName = c.lastName
           this.form.phone = c.phone
           this.form.gender = c.gender
           this.form.email = c.email
-          this.form.description = c.description
+          this.form.descripcion = c.descripcion
           this.form.id = this.$route.params.id
         })
       },

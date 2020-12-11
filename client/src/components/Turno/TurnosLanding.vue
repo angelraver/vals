@@ -1,24 +1,32 @@
 <template>
   <div>
-    <md-list class="md-triple-line" v-if="turnos.length > 0">
-      <div v-for="(item, index) in turnos" v-bind:key="index">
-        <md-list-item>
-          <div class="md-list-item-text">
-            <span>{{ item.cliente.nombre }}</span>
-            <span>{{ dateLabel(item.fecha.dia) }} {{ item.fecha.hora }}</span>
-            <p>{{ item.tratamiento.titulo }}</p>
-          </div>
-        </md-list-item>
-        <md-divider class="md-inset"></md-divider>
-      </div>
-    </md-list>
-    <h3 v-else>No hay turnos cargados.</h3>
+    <md-card md-with-hover v-for="(turnoFecha, index) in turnos" v-bind:key="index">
+      <md-ripple>
+        <md-card-header>
+          <div class="md-title">{{ dateLabel(turnoFecha[0].fecha) }}</div>
+        </md-card-header>
+        <md-card-content>
+          <md-list class="md-double-line">
+            <md-list-item v-for="(item, index) in turnoFecha" v-bind:key="index">
+              <md-avatar>
+                {{ item.hora }}
+              </md-avatar>
+              <div class="md-list-item-text">
+                <span>{{ item.firstName }} {{ item.lastName }}</span>
+                <span>{{ item.titulo }}</span>
+              </div>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+      </md-ripple>
+    </md-card>
   </div>
 </template>
 
 <script>
 import TurnoService from '@/services/Turno'
 import D from '@/utils/date'
+import _ from 'lodash'
 
 export default {
   name: 'TurnosLanding',
@@ -31,14 +39,31 @@ export default {
   },
   methods: {
     async getTurnos () {
-      await TurnoService.fetch({ status: 'activo' })
+      await TurnoService.fetch({ status: 'activo', next: '', get: true })
       .then((response) => {
-        this.turnos = response.data
+        const fechas = _.uniq(response.data.map(t => t.fecha))
+        const fechasOrdenadas = _.sortBy(response.data, [t => t.fecha])
+        this.turnos = fechas.map((fecha) => {
+          const fechaGrupo = fechasOrdenadas.filter(turno => turno.fecha === fecha)
+          // return _.sortBy(fechaGrupo, [t => t.hora])
+          return fechaGrupo
+        })
       })
     },
     dateLabel (date) {
-      return D.getDayNombre(date) + ' ' + D.getDay(date) + ' de ' + D.getMesNombre(date)
+      return D.label(date)
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.md-card {
+  margin-bottom: 1em;
+}
+.md-avatar {
+  width: 1em !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+</style>

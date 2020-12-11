@@ -77,9 +77,9 @@
         this.$router.push({ name: 'Tratamientos', params: {} })
       },
       async getTratamiento () {
-        await TratamientoService.get({ id: this.$route.params.id })
+        await TratamientoService.get(this.$route.params.id)
         .then((tratamiento) => {
-          let t = tratamiento.data
+          let t = tratamiento.data[0]
           this.form.titulo = t.titulo
           this.form.descripcion = t.descripcion
           this.form.precio = t.precio
@@ -89,7 +89,6 @@
       },
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
-
         if (field) {
           return {
             'md-invalid': field.$invalid && field.$dirty

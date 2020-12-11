@@ -2,14 +2,14 @@ import Api from '@/services/Api'
 
 export default {
   fetch (params) {
-    return Api().post('turnos', params)
+    return Api().post('turno', params)
   },
 
   add (params) {
-    return Api().post('turno_add', params)
+    return Api().post('turno', params)
   },
 
-  delete (id) {
-    return Api().delete('turno/' + id)
+  update (params) {
+    return Api().put('turno', params)
   }
 }

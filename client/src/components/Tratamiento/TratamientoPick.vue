@@ -7,13 +7,13 @@
 
       <md-list>
         <md-list-item v-for="(item, index) in tratamientos" v-bind:key="index + 'a'">
-          <md-radio v-model="tratamiento" :value="item._id + '__' + item.titulo" />
+          <md-radio v-model="tratamiento" :value="item.id + '__' + item.titulo" />
           <span class="md-list-item-text">{{item.titulo}}</span>
         </md-list-item>
       </md-list>
       <md-dialog-actions>
-        <md-button class="md-primary" @click="tratamientoSelected()">Cancelar</md-button>
-      <md-button class="md-primary" @click="tratamientoSelected()">Guardar</md-button>
+        <md-button class="md-primary" @click="tratamientoNotSelected()">Cancelar</md-button>
+        <md-button class="md-primary" @click="tratamientoSelected()">Guardar</md-button>
       </md-dialog-actions>
     </md-dialog>
   </md-dialog-content>
@@ -41,6 +41,9 @@ export default {
     tratamientoSelected () {
       let tratamiento = this.tratamiento.split('__')
       this.$emit('tratamiento-selected', { id: tratamiento[0], titulo: tratamiento[1] })
+    },
+    tratamientoNotSelected () {
+      this.$emit('tratamiento-not-selected')
     }
   }
 }

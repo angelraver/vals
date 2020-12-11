@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .logo {
   display: block;
   width: 100%;
@@ -72,12 +72,31 @@ form {
   width: 400px;
   margin: 20px;
 }
-
 .md-drawer {
   width: 230px;
   max-width: calc(100vw - 125px);
   z-index: 6;
 }
+.button-top {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+.button-top2 {
+  position: absolute;
+  top: 1em;
+  right: 6em;
+}
+.button-bottom {
+  float: right;
+}
+.v_buttons_block {
+  position: relative;
+  display: block;
+  margin: 0em 0 5em;
+  height: 1em;
+}
+
 
 @media only screen and (max-width: 600px) {
  form {

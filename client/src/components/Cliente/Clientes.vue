@@ -20,7 +20,7 @@
 
     <md-list class="md-double-line" v-if="clientes.length > 0" >
 
-      <md-list-item v-for="(item, index) in clientes" v-bind:key="index" v-on:click="goToDetails(item._id)">
+      <md-list-item v-for="(item, index) in clientes" v-bind:key="index" v-on:click="goToDetails(item.id)">
         <md-icon class="md-primary">person</md-icon>
         <div class="md-list-item-text">
           <span>{{ item.firstName }} {{ item.lastName }}</span>
@@ -43,7 +43,7 @@ export default {
   computed: {
     getSanitizedClientes () {
       return this.clientes.map(cliente => ({
-        'id': cliente._id,
+        'id': cliente.id,
         'name': cliente.firstName + ' ' + cliente.lastName,
         'toLowerCase': () => cliente.firstName.toLowerCase(),
         'toString': () => cliente.fistName

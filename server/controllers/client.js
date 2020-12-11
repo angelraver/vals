@@ -1,14 +1,14 @@
 var Client = require("../models/client");
 
 exports.getAll = function(req, res) {
-  Client.find({}, 'firstName lastName gender email phone description', function (error, clients) {
+  Client.find({}, 'firstName lastName gender email phone descripcion', function (error, clients) {
 	  if (error) { console.error(error); }
 	  res.send(clients)
 	}).sort({_id:-1})
 };
 
 exports.get = function (req, res) {
-	Client.findById(req.params.id, 'firstName lastName gender email phone description', function (error, client) {
+	Client.findById(req.params.id, 'firstName lastName gender email phone descripcion', function (error, client) {
 	  if (error) { console.error(error); }
 	  res.send(client)
 	})
@@ -21,7 +21,7 @@ exports.add = function(req, res) {
     phone: req.body.phone,
     gender: req.body.gender,
     email: req.body.email,
-		description: req.body.description
+		descripcion: req.body.descripcion
 	})
 
 	client.save(function (error) {
@@ -31,7 +31,7 @@ exports.add = function(req, res) {
 }
 
 exports.update = function (req, res) {
-	Client.findById(req.params.id, 'firstName lastName gender email phone description', function (error, client) {
+	Client.findById(req.params.id, 'firstName lastName gender email phone descripcion', function (error, client) {
 	  if (error) { console.error(error); }
 
 		client.firstName = req.body.firstName
@@ -39,7 +39,7 @@ exports.update = function (req, res) {
 		client.gender = req.body.gender
 		client.email = req.body.email
 		client.phone = req.body.phone
-		client.description = req.body.description
+		client.descripcion = req.body.descripcion
 
 	  client.save(function (error) {
 			if (error) { console.log(error) }

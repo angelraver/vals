@@ -12,29 +12,49 @@ const months = [
   'Noviembre',
   'Diciembre'
 ]
+const getMesNombre = (month) => {
+  return months[Math.abs(month) - 1]
+}
 const weekday = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-const dateP = (fecha) => {
-  const fechap = fecha.split('/')
-  return {
-    day: fechap[0],
-    month: fechap[1],
-    year: fechap[2]
+const dateObj = (fecha) => {
+  let fechap
+  if (fecha.indexOf('/') > 0) {
+    fechap = fecha.split('/')
+    return {
+      day: fechap[0],
+      month: fechap[1],
+      year: fechap[2]
+    }
   }
+  if (fecha.indexOf('-') > 0) {
+    fechap = fecha.split('-')
+    return {
+      day: fechap[2],
+      month: fechap[1],
+      year: fechap[0]
+    }
+  }
+}
+const getDayNombre = (date) => {
+  var dateFormated = new Date(date + 'T10:00:00Z')
+  return weekday[dateFormated.getDay()]
 }
 
 export default {
+  dateObj (date) {
+    return dateObj(date)
+  },
   getDayNombre (date) {
-    var d = dateP(date)
-    var dateFormated = new Date(d.year + '-' + d.month + '-' + d.day + 'T10:00:00Z')
-    return weekday[dateFormated.getDay()]
+    return getDayNombre(date)
   },
-  getMesNombre (date) {
-    return months[Math.abs(dateP(date).month)]
+  getMesNombre (month) {
+    return getMesNombre(month)
   },
-  getDay (date) {
-    return Math.abs(dateP(date).day)
+  getDay (day) {
+    return Math.abs(day)
   },
-  getYear (date) {
-    return dateP(date).year
+  label (date) {
+    const fecha = dateObj(date)
+    return getDayNombre(date) + ' ' + Math.abs(fecha.day) + ' de ' + getMesNombre(fecha.month)
   }
 }

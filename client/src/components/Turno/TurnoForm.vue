@@ -1,6 +1,6 @@
 <template>
   <form>
-    <h2>Nuevo turno para {{nuevoTurno.cliente.nombre}}</h2>
+    <h2>Nuevo turno para {{cliente.firstName}} {{cliente.lastName}}</h2>
     <div class="md-layout md-gutter">
       <md-datepicker
         v-model="selectedDate" 
@@ -18,14 +18,14 @@
       @turno-to-cancel="turnoToCancel"
     />
 
-    <tratamiento-pick v-if="showTratamientos" @tratamiento-selected="tratamientoSelected" />
+    <tratamiento-pick v-if="showTratamientos" @tratamiento-selected="tratamientoSelected" @tratamiento-not-selected="tratamientoNotSelected" />
 
     <md-dialog-confirm
       :md-active.sync="showCancelDialog"
-      md-title="Cancelar Turno"
+      md-title="¿Cancelar Turno?"
       :md-content="cancelText"
-      md-confirm-text="Aceptar"
-      md-cancel-text="Cancelar"
+      md-confirm-text="Sí"
+      md-cancel-text="No"
       @md-confirm="cancelTurno"
     />
 
@@ -38,6 +38,7 @@ import TurnoService from '@/services/Turno'
 import TratamientoPick from '@/components/Tratamiento/TratamientoPick'
 import TurnosHoras from '@/components/Turno/TurnosHoras'
 import format from 'date-fns/format'
+import MT from '@/utils/miniTemplates.js'
 
 export default {
   name: 'TurnoForm',
@@ -48,17 +49,15 @@ export default {
     this.$material.locale.dateFormat = this.dateFormat
   },
   data: () => ({
-    nuevoTurno: {
-      fecha: {},
-      cliente: {},
-      tratamiento: {}
-    },
+    nuevoTurno: {},
+    cliente: {},
     cancelText: '',
     idTurnoToCancel: null,
     idTurnoCancelled: null,
     showTratamientos: false,
     showCancelDialog: false,
     dateFormat: 'dd/MM/yyyy',
+    dateFormatDB: 'yyyy-MM-dd',
     selectedDate: null,
     disabledDates: date => {
       const day = date.getDay()
@@ -68,39 +67,47 @@ export default {
   computed: {
     dateFormated () {
       return format(this.selectedDate, this.dateFormat)
+    },
+    dateFormatedDB () {
+      return format(this.selectedDate, this.dateFormatDB)
     }
   },
   methods: {
     async getCliente () {
-      await ClienteService.get({ id: this.$route.params.idCliente })
+      await ClienteService.get(this.$route.params.idCliente)
       .then((cliente) => {
-        this.nuevoTurno.cliente = {
-          id: cliente.data._id,
-          nombre: cliente.data.firstName + ' ' + cliente.data.lastName
-        }
+        const data = cliente.data[0]
+        this.cliente = data
+        this.nuevoTurno.idCliente = data.id
       })
     },
     horaSelected (hora) {
       this.showTratamientos = true
-      this.nuevoTurno.fecha.dia = this.dateFormated
-      this.nuevoTurno.fecha.hora = hora
-      this.nuevoTurno.fecha.raw = this.selectedDate
+      this.nuevoTurno.fecha = this.dateFormatedDB
+      this.nuevoTurno.hora = hora
+      // this.nuevoTurno.raw = this.selectedDate
+    },
+    async tratamientoNotSelected () {
+      this.showTratamientos = false
     },
     async tratamientoSelected (tratamiento) {
       this.showTratamientos = false
-      this.nuevoTurno.tratamiento = tratamiento
+      this.nuevoTurno.idTratamiento = tratamiento.id
       await TurnoService.add(this.nuevoTurno).then(() => {
-        this.$router.push({ name: 'ClienteDetails', params: { id: this.nuevoTurno.cliente.id } })
+        this.$router.push({ name: 'ClienteDetails', params: { id: this.nuevoTurno.idCliente } })
       })
     },
     turnoToCancel (turno) {
       this.showCancelDialog = true
-      this.cancelText = `${turno.fecha.dia} a las ${turno.fecha.hora} : ${turno.cliente.nombre} - ${turno.tratamiento.titulo} Estás a punto de cancelar éste turno.`
-      this.idTurnoToCancel = turno._id
+      this.cancelText = MT.turnoDetails(turno)
+      this.idTurnoToCancel = turno.id
     },
     async cancelTurno () {
-      await TurnoService.delete(this.idTurnoToCancel).then(() => {
-        console.log('Deleted!')
+      const turno = {
+        id: this.idTurnoToCancel,
+        status: 'eliminado'
+      }
+      await TurnoService.update(turno).then(() => {
         this.idTurnoCancelled = this.idTurnoToCancel
       })
     }

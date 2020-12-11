@@ -2,22 +2,22 @@ import Api from '@/services/Api'
 
 export default {
   fetch () {
-    return Api().get('clients')
+    return Api().get('cliente')
   },
 
   add (params) {
-    return Api().post('client_add', params)
+    return Api().post('cliente', params)
   },
 
   update (params) {
-    return Api().put('client/' + params.id, params)
+    return Api().put('cliente/' + params.id, params)
   },
 
-  get (params) {
-    return Api().get('client/' + params.id)
+  get (id) {
+    return Api().get('cliente/' + id)
   },
 
   delete (id) {
-    return Api().delete('client/' + id)
+    return Api().delete('cliente/' + id)
   }
 }
