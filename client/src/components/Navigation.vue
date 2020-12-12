@@ -28,6 +28,13 @@
       </md-list-item>
     </router-link>
 
+    <router-link v-bind:to="{ name: 'Historial' }" class="md-primary">
+      <md-list-item @click="toggleMenu">
+        <md-icon>list</md-icon>
+        <span class="md-list-item-text" >Historial</span>
+      </md-list-item>
+    </router-link>
+
   </md-list>
 </template>
 

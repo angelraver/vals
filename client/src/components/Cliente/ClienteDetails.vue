@@ -8,7 +8,7 @@
           {{ phone }}
         </a>
       </div>
-      <div>{{ gender === 'M' ? 'Mujer' : 'Hombre' }}</div>
+      <p>{{ gender === 'M' ? 'Mujer' : 'Hombre' }}</p>
       <p>{{ descripcion }}</p>
       <md-button class="md-fab md-primary button-top" v-on:click="newTurno()">
         <md-icon>add_alarm</md-icon>
@@ -26,16 +26,33 @@
       </md-button>
     </section>
 
+    <md-card v-if="turnos.length > 0">
+      <md-card-header>
+        <div class="md-title">Turnos Activos</div>
+      </md-card-header>
+      <md-card-content>
+        <md-list class="md-double-line md-dense" v-if="turnos.length > 0">
+          <md-list-item v-for="(item, index) in turnos" v-bind:key="index">
+            <div class="md-list-item-text">
+              <span>{{ item.hora }}</span>
+              <span>{{ dateLabel(item.fecha) }}</span>
+              <span>{{ item.titulo }}</span>
+            </div>
+            <md-button class="md-icon-button md-list-action" v-on:click="turnoToCancel(item)">
+              <md-icon class="md-primary">cancel</md-icon>
+            </md-button>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+    <br />
    <md-list class="md-double-line md-dense" v-if="turnos.length > 0">
-      <md-subheader>Turnos</md-subheader>
+      <md-subheader>Historial</md-subheader>
       <md-list-item v-for="(item, index) in turnos" v-bind:key="index">
         <div class="md-list-item-text">
-          <span>{{ dateLabel(item.fecha) }} a las {{ item.hora }}</span>
           <span>{{ item.titulo }}</span>
+          <span>{{ dateLabel(item.fecha) }} de 2020</span>
         </div>
-        <md-button class="md-icon-button md-list-action" v-on:click="turnoToCancel(item)">
-          <md-icon class="md-primary">cancel</md-icon>
-        </md-button>
       </md-list-item>
     </md-list>
 

@@ -3,18 +3,17 @@
     <md-list class="md-double-line md-dense">
       <div v-for="(items, index) in turnosHoras" v-bind:key="index">
         <md-list-item class="horas-item" >
-          <md-avatar>
-            {{ items[0].hora }}
-          </md-avatar>
+          <span class="hora">
+            {{ horaStr(items[0].hora) }}
+          </span>
           <div v-if="items[0].idCliente">
-            <span v-for="(item, index) in items" v-bind:key="index">
-              <md-avatar
-                @click.native="turnoDetail(item)"
-                class="md-avatar-icon client-initials md-accent"
-              >
-                {{ initial(item.firstName)+initial(item.lastName) }}
-              </md-avatar>
-            </span>
+            <md-avatar
+              v-for="(item, index) in items" v-bind:key="index"
+              @click.native="turnoDetail(item)"
+              class="md-avatar-icon client-initials md-accent"
+            >
+              !{{ initial(item.firstName)+initial(item.lastName) }}
+            </md-avatar>
           </div>
           <md-button class="md-icon-button md-list-action" v-on:click="items.length < 3 ? horaSelected(items[0].hora) : false">
             <md-icon v-bind:class="[items.length < 3 ? 'md-primary' : '']">alarm</md-icon>
@@ -38,9 +37,10 @@
 import TurnoService from '@/services/Turno'
 import D from '@/utils/date'
 import MT from '@/utils/miniTemplates.js'
+import H from '@/utils/hora.js'
 
 const horas = (start, end) => {
-  return Array(end - start + 1).fill().map((_, idx) => start + idx + ':00')
+  return Array(end - start + 1).fill().map((_, idx) => start + idx + '00')
 }
 
 export default {
@@ -84,6 +84,9 @@ export default {
     horaSelected (hora) {
       this.$emit('hora-selected', hora)
     },
+    horaStr (hora) {
+      return H.horaToStr(hora)
+    },
     turnoDetail (turno) {
       this.showTurnoDetailDialog = true
       this.turnoDetailText = MT.turnoDetails(turno)
@@ -107,15 +110,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.client-initials {
-  margin: 0 .5em;
-}
-@media only screen and (max-width: 600px) {
-  .md-avatar {
-    width: 1em !important;
-    font-size: 14px;
-    font-weight: bold;
-  }
-}
-</style>

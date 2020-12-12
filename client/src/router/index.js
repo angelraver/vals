@@ -9,6 +9,7 @@ import ClienteForm from '@/components/Cliente/ClienteForm'
 import TurnoForm from '@/components/Turno/TurnoForm'
 import Tratamientos from '@/components/Tratamiento/Tratamientos'
 import TratamientoForm from '@/components/Tratamiento/TratamientoForm'
+import Historial from '@/components/Historial'
 
 Vue.use(Router)
 
@@ -59,6 +60,11 @@ export default new Router({
       path: '/tratamientoform/:id',
       component: TratamientoForm,
       name: 'TratamientoForm'
+    },
+    {
+      path: '/historial',
+      component: Historial,
+      name: 'Historial'
     }
   ]
 })

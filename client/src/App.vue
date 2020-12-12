@@ -97,6 +97,19 @@ form {
   height: 1em;
 }
 
+.client-initials {
+  margin: 0 .5em;
+}
+.hora {
+  font-size: 1.5em;
+  color: black;
+}
+.md-avatar {
+  width: 1em !important;
+  font-size: 14px;
+  font-weight: bold;
+  color: red;
+}
 
 @media only screen and (max-width: 600px) {
  form {
