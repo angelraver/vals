@@ -78,12 +78,12 @@ form {
   z-index: 6;
 }
 .button-top {
-  position: absolute;
+  position: absolute !important;
   top: 1em;
   right: 1em;
 }
 .button-top2 {
-  position: absolute;
+  position: absolute !important;
   top: 1em;
   right: 6em;
 }

@@ -10,13 +10,13 @@ $params = json_decode(file_get_contents("php://input"));
 $method = $_SERVER['REQUEST_METHOD'];
 $uris = explode("/", "$_SERVER[REQUEST_URI]");
 $endpoint = $uris[1];
+$id = $uris[2];
 
 switch ($endpoint) {
   case 'tratamiento':
     $tratamiento = new TratamientoController($params);
     switch($method) {
       case 'GET':
-        $id = $uris[2];
         $data = $tratamiento->get($id);
         echo json_encode($data);
       break;
@@ -36,7 +36,6 @@ switch ($endpoint) {
   break;
   case 'cliente':
     $cliente = new ClienteController($params);
-    $id = $uris[2];
     switch($method) {
       case 'GET':
         $data = $cliente->get($id);
@@ -74,10 +73,8 @@ switch ($endpoint) {
       break;
     }
   break;
-  case '/':
-    echo "Bienvenido a la api.";
   break;
   default:
-    echo "Desconocido. Nada que ver.";
+    include "site.php";
   break;
 };

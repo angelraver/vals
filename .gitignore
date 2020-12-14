@@ -1,7 +1,8 @@
 .DS_Store
 client/node_modules/
 server/node_modules/
-dist/
+php/static
+php/site.php
 
 # Editor directories and files
 .idea

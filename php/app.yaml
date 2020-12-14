@@ -1,0 +1,18 @@
+runtime: php72
+
+runtime_config:
+  document_root: .
+
+handlers:
+- url: /(.+\.(gif|png|jpg|css|js|map|PNG))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg|css|js|map|PNG)$
+
+- url: /.*
+  script: auto
+
+env_variables:
+  CLOUDSQL_USER: root
+  CLOUDSQL_DB: vals
+  CLOUDSQL_PASSWORD: Guachito2020!
+  CLOUD_DSN: /cloudsql/fuegoazuladmin:us-central1:fuegoazuladmin
