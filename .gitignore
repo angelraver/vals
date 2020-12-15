@@ -3,7 +3,7 @@ client/node_modules/
 server/node_modules/
 php/static
 php/site.php
-
+android/app/build/
 # Editor directories and files
 .idea
 *.suo
