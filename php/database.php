@@ -3,15 +3,16 @@ class Database {
   public $conn;
 
   public function getConnection(){
-    // $user = "root";
-    // $pass = "";
-    // $dns = "mysql:host=127.0.0.1;dbname=vals";
-
-    // $host = getenv("CLOUD_DSN");
-  
+    $host = '127.0.0.1';
+    if($_SERVER['SERVER_NAME'] === $host) {
+      $user = "root";
+      $pass = "";
+      $dns = "mysql:host=127.0.0.1;dbname=vals";  
+    } else {
     $user = "root";
     $pass = "Guachito2020!";
     $dns = "mysql:dbname=vals;unix_socket=/cloudsql/fuegoazuladmin:us-central1:fuegoazuladmin";
+    }
 
     $this->conn = null;
     try{
