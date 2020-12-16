@@ -43,7 +43,6 @@ export default {
   name: 'Navigation',
   methods: {
     toggleMenu () {
-      console.log('hey')
       this.$emit('toggle-menu')
     }
   }

@@ -56,5 +56,9 @@ export default {
   label (date) {
     const fecha = dateObj(date)
     return getDayNombre(date) + ' ' + Math.abs(fecha.day) + ' de ' + getMesNombre(fecha.month)
+  },
+  labelS (date) {
+    const fecha = dateObj(date)
+    return Math.abs(fecha.day) + '/' + Math.abs(fecha.month) + '/' + fecha.year
   }
 }

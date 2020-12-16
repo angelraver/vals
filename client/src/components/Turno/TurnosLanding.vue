@@ -56,6 +56,7 @@ import TurnoService from '@/services/Turno'
 import MT from '@/utils/miniTemplates.js'
 import D from '@/utils/date'
 import H from '@/utils/hora'
+import L from '@/utils/layout.js'
 import _ from 'lodash'
 
 export default {
@@ -72,6 +73,12 @@ export default {
   watch: {
     idTurnoCancelled: function () {
       this.getTurnos()
+    },
+    showTurnoDetailDialog: function (val) {
+      L.hideNav(val)
+    },
+    showCancelDialog: function (val) {
+      L.hideNav(val)
     }
   },
   mounted () {
@@ -80,7 +87,7 @@ export default {
   },
   methods: {
     newTurno () {
-
+      this.$router.push({ name: 'Clientes' })
     },
     async getTurnos () { // this returns the format [Dias [Horas [Turnos]]]
       await TurnoService.fetch({ status: 'activo', next: '', get: true })

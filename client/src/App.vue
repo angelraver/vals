@@ -53,6 +53,31 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  height: 100%;
+}
+
+.md-toolbar.md-primary, .md-button.md-primary {
+  background: #005da0 !important;
+}
+.md-button.md-primary {
+  color: white !important;
+}
+
+.md-button.md-primary .md-icon-font {
+  color: white !important;
+}
+
+.md-icon-font {
+  color: #005da0 !important;
+}
+
+
+.md-card .md-subhead {
+  font-size: 20px;
+  line-height: 30px;
+  opacity: 0.7;
+}
 .logo {
   display: block;
   width: 100%;

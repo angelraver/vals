@@ -83,6 +83,7 @@ import ClienteService from '@/services/Cliente'
 import TurnoService from '@/services/Turno'
 import D from '@/utils/date'
 import MT from '@/utils/miniTemplates.js'
+import L from '@/utils/layout.js'
 
 export default {
   name: 'ClienteDetails',
@@ -108,8 +109,11 @@ export default {
     cancelText: ''
   }),
   watch: {
-    showDeleteDialog: function (val, oldVal) {
-      document.getElementsByClassName('md-drawer')[0].style['z-index'] = val ? 5 : 6
+    showDeleteDialog: function (val) {
+      L.hideNav(val)
+    },
+    showCancelDialog: function (val) {
+      L.hideNav(val)
     }
   },
   methods: {
