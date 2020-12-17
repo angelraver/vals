@@ -90,13 +90,10 @@ export default {
       this.$router.push({ name: 'Clientes' })
     },
     async getTurnos () { // this returns the format [Dias [Horas [Turnos]]]
-      await TurnoService.fetch({ status: 'activo', next: '', get: true })
+      await TurnoService.fetch({ status: 'activo', next: 'ok', get: true })
       .then((response) => {
         const fechas = _.uniq(response.data.map(t => t.fecha))
-        // const fechasOrdenadas = _.sortBy(response.data, [t => t.fecha])
         const turnos = fechas.map(fecha => response.data.filter(turno => turno.fecha === fecha))
-        // const fechaGrupo = response.data.filter(turno => turno.fecha === fecha)
-        // return _.sortBy(fechaGrupo, [t => t.hora])
         const turnosHorasBlock = turnos.map((turnoFecha) => {
           const horaBlock = _.uniq(turnoFecha.map(t => t.hora))
           return horaBlock.map((hora) => {

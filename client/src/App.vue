@@ -56,23 +56,17 @@ export default {
 body {
   height: 100%;
 }
-
 .md-toolbar.md-primary, .md-button.md-primary {
   background: #005da0 !important;
 }
-.md-button.md-primary {
-  color: white !important;
-}
-
+.md-button.md-primary,
+.md-toolbar.md-theme-default.md-primary .md-icon,
 .md-button.md-primary .md-icon-font {
   color: white !important;
 }
-
 .md-icon-font {
   color: #005da0 !important;
 }
-
-
 .md-card .md-subhead {
   font-size: 20px;
   line-height: 30px;
@@ -121,7 +115,6 @@ form {
   margin: 0em 0 5em;
   height: 1em;
 }
-
 .client-initials {
   margin: 0 .5em;
 }

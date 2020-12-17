@@ -12,12 +12,13 @@
               @click.native="turnoDetail(item)"
               class="md-avatar-icon client-initials md-accent"
             >
-              !{{ initial(item.firstName)+initial(item.lastName) }}
+              {{ initial(item.firstName)+initial(item.lastName) }}
             </md-avatar>
           </div>
-          <md-button class="md-icon-button md-list-action" v-on:click="items.length < 3 ? horaSelected(items[0].hora) : false">
-            <md-icon v-bind:class="[items.length < 3 ? 'md-primary' : '']">alarm</md-icon>
+          <md-button v-show="items.length < 3" class="md-icon-button md-list-action" v-on:click="items.length < 3 ? horaSelected(items[0].hora) : false">
+            <md-icon class="md-primary">alarm</md-icon>
           </md-button>
+          <span v-show="items.length === 3" class="md-icon-button md-list-action"></span>
         </md-list-item>
         <md-divider class="md-inset"></md-divider>
       </div>
