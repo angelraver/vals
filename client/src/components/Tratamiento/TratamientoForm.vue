@@ -23,6 +23,10 @@
           <md-option value="30">30</md-option>
           <md-option value="45">45</md-option>
           <md-option value="60">60</md-option>
+          <md-option value="75">75</md-option>
+          <md-option value="90">90</md-option>
+          <md-option value="120">105</md-option>
+          <md-option value="120">120</md-option>
         </md-select>
         <span class="md-error">Este campo es obligatorio.</span>
       </md-field>
