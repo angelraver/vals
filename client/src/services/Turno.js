@@ -10,6 +10,6 @@ export default {
   },
 
   update (params) {
-    return Api().put('turno', params)
+    return Api().post('turno', params)
   }
 }

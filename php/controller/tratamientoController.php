@@ -8,21 +8,24 @@ class TratamientoController {
   private $precio;
   private $descripcion;
 
-	public function __construct($params) {
-    $this->id = orNull($params->id);
-    $this->titulo = orNull($params->titulo);
-    $this->precio = orNull($params->precio);
-    $this->duracion = orNull($params->duracion);
-    $this->descripcion = orNull($params->descripcion);
-
+  public function __construct($params) {
+    if ($params != null) {
+      $this->id = orNull($params->id);
+      $this->titulo = orNull($params->titulo);
+      $this->precio = orNull($params->precio);
+      $this->duracion = orNull($params->duracion);
+      $this->descripcion = orNull($params->descripcion);
+    }
     $database = new Database();
     $this->db = $database->getConnection();
 	}
 
   public function get($id){
     $sql = $this->db->prepare("CALL tratamientoGet(:id);");
-    $sql->bindParam("id", orNull($id));
+    $_id = orNull($id);
+    $sql->bindParam("id", $_id);
     $sql->execute();
+    $datos = [];
     while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
       $datos []= $row;
     }

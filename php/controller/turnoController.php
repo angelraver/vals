@@ -2,35 +2,43 @@
 class TurnoController {
   private $db;
   
-  public $id;
-  public $idCliente;
-  public $idTratamiento;
-  public $fecha;
-  public $hora;
-  public $status;
-  public $next;
+  private $id;
+  private $idCliente;
+  private $idTratamiento;
+  private $fecha;
+  private $hora;
+  private $status;
+  private $next;
 
 	public function __construct($params) {
-    $this->id = orNull($params->id);
-    $this->idCliente = orNull($params->idCliente);
-    $this->idTratamiento = orNull($params->idTratamiento);
-    $this->fecha = orNull($params->fecha);
-    $this->hora = orNull($params->hora);
-    $this->status = orNull($params->status);
-    $this->next = orNull($params->next);
-
+    if ($params != null) {
+      $this->id = isset($params->id) ? orNull($params->id) : NULL;
+      $this->idCliente = isset($params->idCliente) ? orNull($params->idCliente) : NULL;
+      $this->idTratamiento = isset($params->idTratamiento) ? orNull($params->idTratamiento) : NULL;
+      $this->fecha = isset($params->fecha) ? orNull($params->fecha) : NULL;
+      $this->hora = isset($params->hora) ? orNull($params->hora) : NULL;
+      $this->status = isset($params->status) ? orNull($params->status) : NULL;
+      $this->next = isset($params->next) ? orNull($params->next) : NULL;
+    }
     $database = new Database();
     $this->db = $database->getConnection();
 	}
 
   public function get(){
     $sql = $this->db->prepare("CALL turnoGet(:id, :idCliente, :idTratamiento, :fecha, :status, :next);");
-    $sql->bindParam("id", orNull($this->id));
-    $sql->bindParam("idCliente", orNull($this->idCliente));
-    $sql->bindParam("idTratamiento", orNull($this->idTratamiento));
-    $sql->bindParam("fecha", orNull($this->fecha));
-    $sql->bindParam("status", orNull($this->status));
-    $sql->bindParam("next", orNull($this->next));
+    $id = orNull($this->id);
+    $idCliente = orNull($this->idCliente);
+    $idTratamiento = orNull($this->idTratamiento);
+    $fecha = orNull($this->fecha);
+    $status = orNull($this->status);
+    $next = orNull($this->next);
+
+    $sql->bindParam("id", $id);
+    $sql->bindParam("idCliente", $idCliente);
+    $sql->bindParam("idTratamiento", $idTratamiento);
+    $sql->bindParam("fecha", $fecha);
+    $sql->bindParam("status", $status);
+    $sql->bindParam("next", $next);
     $sql->execute();
     $datos = [];
     while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {

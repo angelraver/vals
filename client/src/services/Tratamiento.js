@@ -10,7 +10,7 @@ export default {
   },
 
   update (params) {
-    return Api().put('tratamiento/' + params.id, params)
+    return Api().post('tratamiento/' + params.id, params)
   },
 
   get (id) {
@@ -18,6 +18,6 @@ export default {
   },
 
   delete (id) {
-    return Api().delete('tratamiento/' + id)
+    return Api().post('tratamiento/' + id, { delete: true })
   }
 }
