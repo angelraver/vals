@@ -5,7 +5,7 @@
         <h3 class="md-title">Elegir tratamiento</h3>
       </md-toolbar>
 
-      <md-list>
+      <md-list style="overflow: auto;">
         <md-list-item v-for="(item, index) in tratamientos" v-bind:key="index + 'a'">
           <md-radio v-model="tratamiento" :value="item.id + '__' + item.titulo" />
           <span class="md-list-item-text">{{item.titulo}}</span>

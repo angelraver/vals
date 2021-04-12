@@ -34,9 +34,10 @@
         <md-list class="md-double-line md-dense" v-if="turnos.length > 0">
           <md-list-item v-for="(item, index) in turnos" v-bind:key="index">
             <div class="md-list-item-text">
-              <span>{{ item.hora }}</span>
-              <span>{{ dateLabel(item.fecha) }}</span>
+              <span>{{ horaStr(item.hora) }}</span>
+              <span>{{ dateLabel(item.fecha) }} de {{ dateObj(item.fecha).year }}</span>
               <span>{{ item.titulo }}</span>
+              <strong>{{ item.firstName }}</strong>
             </div>
             <md-button class="md-icon-button md-list-action" v-on:click="turnoToCancel(item)">
               <md-icon class="md-primary">cancel</md-icon>
@@ -48,10 +49,10 @@
     <br />
    <md-list class="md-double-line md-dense" v-if="turnos.length > 0">
       <md-subheader>Historial</md-subheader>
-      <md-list-item v-for="(item, index) in turnos" v-bind:key="index">
+      <md-list-item v-for="(item, index) in turnosHistorial" v-bind:key="index">
         <div class="md-list-item-text">
           <span>{{ item.titulo }}</span>
-          <span>{{ dateLabel(item.fecha) }} de 2020</span>
+          <span>{{ dateLabel(item.fecha) }} de {{ dateObj(item.fecha).year }}</span>
         </div>
       </md-list-item>
     </md-list>
@@ -84,6 +85,7 @@ import TurnoService from '@/services/Turno'
 import D from '@/utils/date'
 import MT from '@/utils/miniTemplates.js'
 import L from '@/utils/layout.js'
+import H from '@/utils/hora'
 
 export default {
   name: 'ClienteDetails',
@@ -93,6 +95,7 @@ export default {
     if (this.idCliente) {
       this.getCliente()
       this.getTurnosCliente()
+      this.getTurnosClienteHistorial()
     }
   },
   data: () => ({
@@ -105,6 +108,7 @@ export default {
     descripcion: '',
     showDeleteDialog: false,
     turnos: [],
+    turnosHistorial: [],
     showCancelDialog: false,
     cancelText: ''
   }),
@@ -130,9 +134,22 @@ export default {
       })
     },
     async getTurnosCliente () {
-      await TurnoService.fetch({ idCliente: this.idCliente, status: 'activo', get: true })
-      .then((response) => {
+      await TurnoService.fetch({
+        idCliente: this.idCliente,
+        status: 'activo',
+        get: true,
+        next: 'ok'
+      }).then((response) => {
         this.turnos = response.data
+      })
+    },
+    async getTurnosClienteHistorial () {
+      await TurnoService.fetch({
+        idCliente: this.idCliente,
+        get: true,
+        next: 'ko'
+      }).then((response) => {
+        this.turnosHistorial = response.data
       })
     },
     turnoToCancel (turno) {
@@ -166,6 +183,12 @@ export default {
     },
     dateLabel (date) {
       return D.label(date)
+    },
+    dateObj (date) {
+      return D.dateObj(date)
+    },
+    horaStr (hora) {
+      return H.horaToStr(hora)
     }
   }
 }

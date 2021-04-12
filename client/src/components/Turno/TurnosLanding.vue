@@ -17,7 +17,7 @@
                   @click.native="turnoDetail(turno)"
                   class="md-avatar-icon client-initials md-accent"
                 >
-                  {{ initial(turno.firstName)+initial(turno.lastName) }}
+                  {{ initial(turno.firstName) + initial(turno.lastName) }}
                 </md-avatar>
               </div>
 
