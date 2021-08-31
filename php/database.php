@@ -3,9 +3,8 @@ class Database {
   public $conn;
 
   public function getConnection(){
-    $host = '127.0.0.1';
     $this->conn = null;
-    if($_SERVER['SERVER_NAME'] === $host) {
+    if($_SERVER['SERVER_NAME'] === '127.0.0.1') {
       $user = "root";
       $pass = "";
       $dns = "mysql:host=127.0.0.1;dbname=vals";

@@ -1,1 +1,79 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>Fuego Azul Admin</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=stylesheet href=./static/material.css><link href=/static/css/app.c8ea0f4f6690272cd52cc19ee831d990.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.7c8b1596c45c034faa88.js></script><script type=text/javascript src=/static/js/vendor.01788fb2dec0752fbe90.js></script><script type=text/javascript src=/static/js/app.d4e93ab62f0f74683aa2.js></script></body></html>
+<?php
+require './headers.php';
+require './utils.php';
+require './database.php';
+require './controller/tratamientoController.php';
+require './controller/clienteController.php';
+require './controller/turnoController.php';
+
+$params = json_decode(file_get_contents("php://input"));
+$method = $_SERVER['REQUEST_METHOD'];
+$uris = explode("/", "$_SERVER[REQUEST_URI]");
+$endpoint = isset($uris[2]) ? $uris[2] : NULL;
+$id = isset($uris[3]) ? $uris[3] : NULL;
+
+switch ($endpoint) {
+  case 'tratamiento':
+    $tratamiento = new TratamientoController($params);
+    switch($method) {
+      case 'GET':
+        $data = $tratamiento->get($id);
+        echo json_encode($data);
+      break;
+      case 'POST':
+        if (isset($params->delete)) {
+          $result = $tratamiento->delete($id);
+        } else {
+          if (!isset($id)) {
+            $result = $tratamiento->create();
+          } else {
+            $result = $tratamiento->update();
+          }
+        }
+        echo json_encode("{ status: $result }");
+      break;
+    }
+  break;
+  case 'cliente':
+    $cliente = new ClienteController($params);
+    switch($method) {
+      case 'GET':
+        $data = $cliente->get($id);
+        echo json_encode($data);
+      break;
+      case 'POST':
+        if (isset($params->delete)) {
+          $result = $cliente->delete($id);
+        } else {
+          if (is_null($id)) {
+            $result = $cliente->create();
+          } else {
+            $result = $cliente->update();
+          }
+        }
+        echo json_encode("{ status: $result }");
+      break;
+    }
+  break;
+  case 'turno':
+    $turno = new TurnoController($params);
+    switch($method) {
+      case 'POST':
+        if (isset($params->get)) {
+          $data = $turno->get();
+          echo json_encode($data);
+        } else {
+          if (!isset($params->id)) {
+            $result = $turno->create();
+          } else {
+            $result = $turno->update();
+          }
+          echo json_encode("{ status: $result }");
+        }
+      break;
+    }
+  break;
+  default:
+    echo 'Nada por aquí...';
+  break;
+};
