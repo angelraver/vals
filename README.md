@@ -5,10 +5,9 @@ npm run dev
 ```
 http://localhost:8000
 
-# server (mongo)
+# server (php)
 ```
-cd server
-npm start
+/php
 ```
 http://localhost:8001
 
